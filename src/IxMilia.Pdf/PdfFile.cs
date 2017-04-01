@@ -41,6 +41,7 @@ namespace IxMilia.Pdf
                     page.Stream.WriteTo(writer);
                 }
 
+                writer.Flush();
                 var xrefCount = offsets.Count + 1; // to account for the required zero-id object
                 var xrefLoc = stream.Position;
                 writer.Write("xref\r\n");

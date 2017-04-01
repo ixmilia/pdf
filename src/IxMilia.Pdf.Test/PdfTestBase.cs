@@ -7,7 +7,7 @@ namespace IxMilia.Pdf.Test
 {
     public abstract class PdfTestBase
     {
-        public void AssertFileEquals(PdfFile file, string expected)
+        private string GetFileContents(PdfFile file)
         {
             using (var ms = new MemoryStream())
             {
@@ -16,9 +16,21 @@ namespace IxMilia.Pdf.Test
                 using (var reader = new StreamReader(ms))
                 {
                     var actual = reader.ReadToEnd();
-                    Assert.Equal(expected.Trim(), actual);
+                    return actual;
                 }
             }
+        }
+
+        public void AssertFileEquals(PdfFile file, string expected)
+        {
+            var actual = GetFileContents(file);
+            Assert.Equal(expected.Trim(), actual);
+        }
+
+        public void AssertFileContains(PdfFile file, string expected)
+        {
+            var actual = GetFileContents(file);
+            Assert.Contains(expected.Trim(), actual);
         }
     }
 }

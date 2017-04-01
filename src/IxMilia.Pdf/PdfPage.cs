@@ -1,5 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+
 namespace IxMilia.Pdf
 {
     public class PdfPage : PdfObject
@@ -9,6 +11,7 @@ namespace IxMilia.Pdf
 
         public double Width { get; set; }
         public double Height { get; set; }
+        public IList<PdfLine> Lines => Stream.Lines;
 
         public PdfPage(double width, double height)
         {
