@@ -32,5 +32,12 @@ namespace IxMilia.Pdf.Test
             var actual = GetFileContents(file);
             Assert.Contains(expected.Trim(), actual);
         }
+
+        public void AssertPageContains(PdfPage page, string expected)
+        {
+            var file = new PdfFile();
+            file.Pages.Add(page);
+            AssertFileContains(file, expected);
+        }
     }
 }

@@ -19,6 +19,11 @@ namespace IxMilia.Pdf
             var lastColor = new PdfColor(); // black
             foreach (var line in Lines)
             {
+                if (lastWidth != line.StrokeWidth || lastColor != line.Color)
+                {
+                    body.Append("S\r\n");
+                }
+
                 if (lastWidth != line.StrokeWidth)
                 {
                     body.Append($"{line.StrokeWidth} w\r\n");
@@ -27,8 +32,6 @@ namespace IxMilia.Pdf
 
                 if (lastColor != line.Color)
                 {
-                    body.Append("S\r\n");
-
                     body.Append($"{line.Color.R} {line.Color.G} {line.Color.B} SC\r\n");
                     lastColor = line.Color;
                 }

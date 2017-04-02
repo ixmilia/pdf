@@ -64,5 +64,52 @@ startxref
 0.00 792.00 l
 ");
         }
+
+        [Fact]
+        public void VerifyLineStrokeTest()
+        {
+            var page = new PdfPage(8.5 * 72, 11 * 72);
+            page.Lines.Add(new PdfLine(
+                new PdfPoint(0.0, 0.0),
+                new PdfPoint(1.0, 1.0)
+            ));
+            page.Lines.Add(new PdfLine(
+                new PdfPoint(2.0, 2.0),
+                new PdfPoint(3.0, 3.0),
+                strokeWidth: 1.1
+            ));
+            page.Lines.Add(new PdfLine(
+                new PdfPoint(4.0, 4.0),
+                new PdfPoint(5.0, 5.0),
+                color: new PdfColor(1.0, 0.0, 0.0)
+            ));
+            page.Lines.Add(new PdfLine(
+                new PdfPoint(6.0, 6.0),
+                new PdfPoint(7.0, 7.0),
+                strokeWidth: 2.2,
+                color: new PdfColor(0.0, 1.0, 0.0)
+            ));
+            AssertPageContains(page, @"
+0 w
+0 0 0 SC
+0.00 0.00 m
+1.00 1.00 l
+S
+1.1 w
+2.00 2.00 m
+3.00 3.00 l
+S
+0 w
+1 0 0 SC
+4.00 4.00 m
+5.00 5.00 l
+S
+2.2 w
+0 1 0 SC
+6.00 6.00 m
+7.00 7.00 l
+S
+");
+        }
     }
 }
