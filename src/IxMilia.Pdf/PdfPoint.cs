@@ -15,7 +15,7 @@ namespace IxMilia.Pdf
 
         public override string ToString()
         {
-            return $"({X:f}, {Y:f})";
+            return $"({X:f2}, {Y:f2})";
         }
 
         public static bool operator ==(PdfPoint a, PdfPoint b)

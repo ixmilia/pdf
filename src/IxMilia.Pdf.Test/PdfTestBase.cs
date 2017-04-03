@@ -7,6 +7,12 @@ namespace IxMilia.Pdf.Test
 {
     public abstract class PdfTestBase
     {
+        private string NormalizeCrLf(string value)
+        {
+            // ensure all newlines are CRLF
+            return value.Replace("\r", "").Replace("\n", "\r\n");
+        }
+
         private string GetFileContents(PdfFile file)
         {
             using (var ms = new MemoryStream())
@@ -24,13 +30,13 @@ namespace IxMilia.Pdf.Test
         public void AssertFileEquals(PdfFile file, string expected)
         {
             var actual = GetFileContents(file);
-            Assert.Equal(expected.Trim(), actual);
+            Assert.Equal(NormalizeCrLf(expected.Trim()), actual);
         }
 
         public void AssertFileContains(PdfFile file, string expected)
         {
             var actual = GetFileContents(file);
-            Assert.Contains(expected.Trim(), actual);
+            Assert.Contains(NormalizeCrLf(expected.Trim()), actual);
         }
 
         public void AssertPageContains(PdfPage page, string expected)

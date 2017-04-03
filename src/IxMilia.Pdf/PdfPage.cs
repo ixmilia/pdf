@@ -47,7 +47,7 @@ namespace IxMilia.Pdf
                 resources.Add($"/Font <</F{font.FontId} {font.Id} 0 R>>");
             }
 
-            return $"<</Type /Page /Parent {Parent.Id} 0 R /Contents {Stream.Id} 0 R /MediaBox [0 0 {Width:f} {Height:f}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
+            return $"<</Type /Page /Parent {Parent.Id} 0 R /Contents {Stream.Id} 0 R /MediaBox [0 0 {Width:f2} {Height:f2}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
         }
 
         private IEnumerable<PdfFont> GetAllFonts()
