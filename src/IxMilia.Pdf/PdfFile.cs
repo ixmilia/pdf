@@ -8,26 +8,18 @@ namespace IxMilia.Pdf
 {
     public class PdfFile
     {
-        internal PdfCatalog Catalog { get; } = new PdfCatalog();
-        public IList<PdfPage> Pages => Catalog.Pages.Pages;
-
+        private PdfCatalog _catalog = new PdfCatalog();
         private List<int> _offsets = new List<int>();
+
+        public IList<PdfPage> Pages => _catalog.Pages.Pages;
 
         public void Save(Stream stream)
         {
             _offsets.Clear();
+            var writtenObjects = new HashSet<PdfObject>();
             AssignIds();
-
             stream.WriteLine("%PDF-1.6");
-            WriteObject(Catalog, stream);
-            WriteObject(Catalog.Pages, stream);
-
-            foreach (var page in Pages)
-            {
-                page.Parent = Catalog.Pages;
-                WriteObject(page, stream);
-                WriteObject(page.Stream, stream);
-            }
+            WriteObject(_catalog, stream, writtenObjects);
 
             var xrefCount = _offsets.Count + 1; // to account for the required zero-id object
             var xrefLoc = stream.Position;
@@ -39,28 +31,39 @@ namespace IxMilia.Pdf
                 stream.WriteLine($"{_offsets[i].ToString().PadLeft(10, '0')} {(0).ToString().PadLeft(5, '0')} n");
             }
 
-            stream.WriteLine($"trailer <</Size {xrefCount} /Root {Catalog.Id} 0 R>>");
+            stream.WriteLine($"trailer <</Size {xrefCount} /Root {_catalog.Id} 0 R>>");
             stream.WriteLine("startxref");
             stream.Write(xrefLoc.ToString());
             stream.WriteLine("");
             stream.Write("%%EOF");
         }
 
-        private void WriteObject(PdfObject obj, Stream stream)
+        private void WriteObject(PdfObject obj, Stream stream, HashSet<PdfObject> writtenObjects)
         {
-            _offsets.Add((int)stream.Position);
-            obj.WriteTo(stream);
+            if (writtenObjects.Add(obj))
+            {
+                _offsets.Add((int)stream.Position);
+                obj.WriteTo(stream);
+                foreach (var child in obj.GetChildren())
+                {
+                    child.Parent = obj;
+                    WriteObject(child, stream, writtenObjects);
+                }
+            }
         }
 
         private void AssignIds()
         {
             var id = 1;
-            Catalog.Id = id++;
-            Catalog.Pages.Id = id++;
-            foreach (var page in Pages)
+            AssignIds(_catalog, ref id);
+        }
+
+        private static void AssignIds(PdfObject obj, ref int id)
+        {
+            obj.Id = id++;
+            foreach (var child in obj.GetChildren())
             {
-                page.Id = id++;
-                page.Stream.Id = id++;
+                AssignIds(child, ref id);
             }
         }
     }

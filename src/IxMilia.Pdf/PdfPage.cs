@@ -7,7 +7,6 @@ namespace IxMilia.Pdf
 {
     public class PdfPage : PdfObject
     {
-        internal PdfPages Parent { get; set; }
         internal PdfStream Stream { get; } = new PdfStream();
 
         public double Width { get; set; }
@@ -18,6 +17,11 @@ namespace IxMilia.Pdf
         {
             Width = width;
             Height = height;
+        }
+
+        public override IEnumerable<PdfObject> GetChildren()
+        {
+            yield return Stream;
         }
 
         protected override byte[] GetContent()
