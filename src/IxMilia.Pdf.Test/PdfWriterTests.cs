@@ -117,7 +117,8 @@ S
         {
             var file = new PdfFile();
             var page = new PdfPage(8.5 * 72, 11 * 72);
-            page.Items.Add(new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72)));
+            var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72));
+            page.Items.Add(text);
             file.Pages.Add(page);
             AssertFileContains(file, @"
 BT
@@ -132,6 +133,16 @@ ET
 ");
 
             AssertFileContains(file, "<</Type /Font /Subtype /Type1 /BaseFont /Helvetica>>");
+
+            text.CharacterWidth = 0.25;
+            AssertFileContains(file, @"
+BT
+    /F1 12 Tf
+    72.00 144.00 Td
+    0.25 Tc
+    (foo) Tj
+ET
+");
         }
     }
 }
