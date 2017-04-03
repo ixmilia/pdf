@@ -1,8 +1,5 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using IxMilia.Pdf.Extensions;
-using System.Text;
-
 namespace IxMilia.Pdf
 {
     public class PdfText : PdfStreamItem
@@ -23,25 +20,19 @@ namespace IxMilia.Pdf
             Location = location;
         }
 
-        internal override void WriteToStream(PdfStreamWriterStatus writerStatus, StringBuilder stringBuilder)
+        internal override void Write(PdfStreamWriter writer)
         {
-            if (writerStatus.LastWrittenColor != Color)
-            {
-                stringBuilder.Append("S\r\n");
-                stringBuilder.Append($"{Color.AsWritable()} SC\r\n");
-                writerStatus.LastWrittenColor = Color;
-            }
-
-            stringBuilder.Append("BT\r\n");
-            stringBuilder.Append($"    /F{Font.FontId} {FontSize} Tf\r\n");
-            stringBuilder.Append($"    {Location} Td\r\n");
+            writer.SetState(color: Color);
+            writer.WriteLine("BT");
+            writer.WriteLine($"    /F{Font.FontId} {FontSize} Tf");
+            writer.WriteLine($"    {Location} Td");
             if (CharacterWidth != 0.0)
             {
-                stringBuilder.Append($"    {CharacterWidth:f2} Tc\r\n");
+                writer.WriteLine($"    {CharacterWidth:f2} Tc");
             }
 
-            stringBuilder.Append($"    ({Value}) Tj\r\n");
-            stringBuilder.Append("ET\r\n");
+            writer.WriteLine($"    ({Value}) Tj");
+            writer.WriteLine("ET");
         }
     }
 }

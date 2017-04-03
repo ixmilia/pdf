@@ -12,22 +12,18 @@ namespace IxMilia.Pdf
 
         protected override byte[] GetContent()
         {
-            var body = new StringBuilder();
-            body.Append("/DeviceRGB CS\r\n");
-            body.Append("0 w\r\n");
-            body.Append("0 0 0 SC\r\n");
-            var writerStatus = new PdfStreamWriterStatus();
+            var writer = new PdfStreamWriter();
             foreach (var item in Items)
             {
-                item.WriteToStream(writerStatus, body);
+                item.Write(writer);
             }
 
-            body.Append("S\r\n");
+            writer.Stroke();
 
             var sb = new StringBuilder();
-            sb.Append($"<</Length {body.Length}>>\r\n");
+            sb.Append($"<</Length {writer.Length}>>\r\n");
             sb.Append("stream\r\n");
-            sb.Append(body.ToString());
+            sb.Append(writer.ToString());
             sb.Append("endstream\r\n");
             return sb.ToString().GetBytes();
         }

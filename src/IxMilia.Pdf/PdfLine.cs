@@ -1,8 +1,5 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using IxMilia.Pdf.Extensions;
-using System.Text;
-
 namespace IxMilia.Pdf
 {
     public class PdfLine : PdfStreamItem
@@ -20,27 +17,11 @@ namespace IxMilia.Pdf
             Color = color;
         }
 
-        internal override void WriteToStream(PdfStreamWriterStatus writerStatus, StringBuilder stringBuilder)
+        internal override void Write(PdfStreamWriter writer)
         {
-            if (writerStatus.LastStrokeWidth != StrokeWidth || writerStatus.LastWrittenColor != Color)
-            {
-                stringBuilder.Append("S\r\n");
-            }
-
-            if (writerStatus.LastStrokeWidth != StrokeWidth)
-            {
-                stringBuilder.Append($"{StrokeWidth} w\r\n");
-                writerStatus.LastStrokeWidth = StrokeWidth;
-            }
-
-            if (writerStatus.LastWrittenColor != Color)
-            {
-                stringBuilder.Append($"{Color.AsWritable()} SC\r\n");
-                writerStatus.LastWrittenColor = Color;
-            }
-
-            stringBuilder.Append($"{P1} m\r\n");
-            stringBuilder.Append($"{P2} l\r\n");
+            writer.SetState(color: Color, strokeWidth: StrokeWidth);
+            writer.WriteLine($"{P1} m");
+            writer.WriteLine($"{P2} l");
         }
     }
 }
