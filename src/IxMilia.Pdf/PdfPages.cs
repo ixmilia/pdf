@@ -17,7 +17,7 @@ namespace IxMilia.Pdf
 
         protected override byte[] GetContent()
         {
-            return $"<</Type /Pages /Kids [{string.Join(" ", Pages.Select(p => $"{p.Id} 0 R"))}] /Count {Pages.Count}>>".GetNewLineBytes();
+            return $"<</Type /Pages /Kids [{string.Join(" ", Pages.Select(p => p.Id.AsObjectReference()))}] /Count {Pages.Count}>>".GetNewLineBytes();
         }
     }
 }

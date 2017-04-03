@@ -32,7 +32,7 @@ namespace IxMilia.Pdf
                 stream.WriteLine($"{_offsets[i].ToString().PadLeft(10, '0')} {(0).ToString().PadLeft(5, '0')} n");
             }
 
-            stream.WriteLine($"trailer <</Size {xrefCount} /Root {_catalog.Id} 0 R>>");
+            stream.WriteLine($"trailer <</Size {xrefCount} /Root {_catalog.Id.AsObjectReference()}>>");
             stream.WriteLine("startxref");
             stream.Write(xrefLoc.ToString());
             stream.WriteLine("");

@@ -44,10 +44,10 @@ namespace IxMilia.Pdf
             var resources = new List<string>();
             foreach (var font in GetAllFonts())
             {
-                resources.Add($"/Font <</F{font.FontId} {font.Id} 0 R>>");
+                resources.Add($"/Font <</F{font.FontId} {font.Id.AsObjectReference()}>>");
             }
 
-            return $"<</Type /Page /Parent {Parent.Id} 0 R /Contents {Stream.Id} 0 R /MediaBox [0 0 {Width:f2} {Height:f2}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
+            return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width:f2} {Height:f2}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
         }
 
         private IEnumerable<PdfFont> GetAllFonts()
