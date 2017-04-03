@@ -1,6 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.IO;
+using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
@@ -8,13 +9,13 @@ namespace IxMilia.Pdf
     {
         internal int Id { get; set; }
 
-        protected abstract string GetContent();
+        protected abstract byte[] GetContent();
 
-        internal void WriteTo(StreamWriter writer)
+        internal void WriteTo(Stream stream)
         {
-            writer.Write($"{Id} 0 obj\r\n");
-            writer.Write(GetContent());
-            writer.Write("endobj\r\n");
+            stream.WriteLine($"{Id} 0 obj");
+            stream.WriteBytes(GetContent());
+            stream.WriteLine("endobj");
         }
     }
 }

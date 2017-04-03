@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
@@ -9,7 +10,7 @@ namespace IxMilia.Pdf
     {
         public IList<PdfLine> Lines { get; } = new List<PdfLine>();
 
-        protected override string GetContent()
+        protected override byte[] GetContent()
         {
             var body = new StringBuilder();
             body.Append("/DeviceRGB CS\r\n");
@@ -47,7 +48,7 @@ namespace IxMilia.Pdf
             sb.Append("stream\r\n");
             sb.Append(body.ToString());
             sb.Append("endstream\r\n");
-            return sb.ToString();
+            return sb.ToString().GetBytes();
         }
     }
 }

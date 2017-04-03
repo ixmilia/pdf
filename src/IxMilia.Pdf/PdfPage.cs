@@ -1,6 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
@@ -19,9 +20,9 @@ namespace IxMilia.Pdf
             Height = height;
         }
 
-        protected override string GetContent()
+        protected override byte[] GetContent()
         {
-            return $"<</Type /Page /Parent {Parent.Id} 0 R /Contents {Stream.Id} 0 R /MediaBox [0 0 {Width:f} {Height:f}] /Resources<<>>>>\r\n";
+            return $"<</Type /Page /Parent {Parent.Id} 0 R /Contents {Stream.Id} 0 R /MediaBox [0 0 {Width:f} {Height:f}] /Resources<<>>>>".GetNewLineBytes();
         }
     }
 }

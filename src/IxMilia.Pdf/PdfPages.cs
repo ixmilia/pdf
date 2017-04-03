@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
@@ -9,9 +10,9 @@ namespace IxMilia.Pdf
     {
         public IList<PdfPage> Pages { get; } = new List<PdfPage>();
 
-        protected override string GetContent()
+        protected override byte[] GetContent()
         {
-            return $"<</Type /Pages /Kids [{string.Join(" ", Pages.Select(p => $"{p.Id} 0 R"))}] /Count {Pages.Count}>>\r\n";
+            return $"<</Type /Pages /Kids [{string.Join(" ", Pages.Select(p => $"{p.Id} 0 R"))}] /Count {Pages.Count}>>".GetNewLineBytes();
         }
     }
 }

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
@@ -16,48 +17,43 @@ namespace IxMilia.Pdf
             AssignIds();
             var offsets = new List<int>();
             var encoding = new UTF8Encoding(false);
-            using (var writer = new StreamWriter(stream, encoding, 1024, leaveOpen: true))
+            void AddOffset()
             {
-                void AddOffset()
-                {
-                    writer.Flush();
-                    offsets.Add((int)stream.Position);
-                }
-
-                writer.Write("%PDF-1.6\r\n");
-
-                AddOffset();
-                Catalog.WriteTo(writer);
-
-                AddOffset();
-                Catalog.Pages.WriteTo(writer);
-
-                foreach (var page in Pages)
-                {
-                    AddOffset();
-                    page.Parent = Catalog.Pages;
-                    page.WriteTo(writer);
-                    AddOffset();
-                    page.Stream.WriteTo(writer);
-                }
-
-                writer.Flush();
-                var xrefCount = offsets.Count + 1; // to account for the required zero-id object
-                var xrefLoc = stream.Position;
-                writer.Write("xref\r\n");
-                writer.Write($"0 {xrefCount}\r\n");
-                writer.Write($"0000000000 {ushort.MaxValue} f\r\n"); // said required zero-id free object
-                for (var i = 0; i < offsets.Count; i++)
-                {
-                    writer.Write($"{offsets[i].ToString().PadLeft(10, '0')} {(0).ToString().PadLeft(5, '0')} n\r\n");
-                }
-
-                writer.Write($"trailer <</Size {xrefCount} /Root {Catalog.Id} 0 R>>\r\n");
-                writer.Write("startxref\r\n");
-                writer.Write(xrefLoc.ToString());
-                writer.Write("\r\n");
-                writer.Write("%%EOF");
+                offsets.Add((int)stream.Position);
             }
+
+            stream.WriteLine("%PDF-1.6");
+
+            AddOffset();
+            Catalog.WriteTo(stream);
+
+            AddOffset();
+            Catalog.Pages.WriteTo(stream);
+
+            foreach (var page in Pages)
+            {
+                AddOffset();
+                page.Parent = Catalog.Pages;
+                page.WriteTo(stream);
+                AddOffset();
+                page.Stream.WriteTo(stream);
+            }
+
+            var xrefCount = offsets.Count + 1; // to account for the required zero-id object
+            var xrefLoc = stream.Position;
+            stream.WriteLine("xref");
+            stream.WriteLine($"0 {xrefCount}");
+            stream.WriteLine($"0000000000 {ushort.MaxValue} f"); // said required zero-id free object
+            for (var i = 0; i < offsets.Count; i++)
+            {
+                stream.WriteLine($"{offsets[i].ToString().PadLeft(10, '0')} {(0).ToString().PadLeft(5, '0')} n");
+            }
+
+            stream.WriteLine($"trailer <</Size {xrefCount} /Root {Catalog.Id} 0 R>>");
+            stream.WriteLine("startxref");
+            stream.Write(xrefLoc.ToString());
+            stream.WriteLine("");
+            stream.Write("%%EOF");
         }
 
         private void AssignIds()
