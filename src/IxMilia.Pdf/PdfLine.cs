@@ -38,8 +38,8 @@ namespace IxMilia.Pdf
                 writerStatus.LastWrittenColor = Color;
             }
 
-            stringBuilder.Append($"{P1.X:f2} {P1.Y:f2} m\r\n");
-            stringBuilder.Append($"{P2.X:f2} {P2.Y:f2} l\r\n");
+            stringBuilder.Append($"{P1} m\r\n");
+            stringBuilder.Append($"{P2} l\r\n");
         }
     }
 }

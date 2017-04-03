@@ -33,7 +33,7 @@ namespace IxMilia.Pdf
 
             stringBuilder.Append("BT\r\n");
             stringBuilder.Append($"    /F{Font.FontId} {FontSize} Tf\r\n");
-            stringBuilder.Append($"    {Location.X:f2} {Location.Y:f2} Td\r\n");
+            stringBuilder.Append($"    {Location} Td\r\n");
             if (CharacterWidth != 0.0)
             {
                 stringBuilder.Append($"    {CharacterWidth:f2} Tc\r\n");
