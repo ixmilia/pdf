@@ -9,10 +9,14 @@ namespace IxMilia.Pdf
     public abstract class PdfObject
     {
         internal int Id { get; set; }
-        
+
         public PdfObject Parent { get; internal set; }
 
         protected abstract byte[] GetContent();
+
+        public virtual void BeforeWrite()
+        {
+        }
 
         public virtual IEnumerable<PdfObject> GetChildren()
         {

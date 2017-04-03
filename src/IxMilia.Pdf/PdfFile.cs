@@ -18,6 +18,7 @@ namespace IxMilia.Pdf
             _offsets.Clear();
             var writtenObjects = new HashSet<PdfObject>();
             AssignIds();
+            BeforeWrite(_catalog);
             stream.WriteLine("%PDF-1.6");
             WriteObject(_catalog, stream, writtenObjects);
 
@@ -49,6 +50,15 @@ namespace IxMilia.Pdf
                     child.Parent = obj;
                     WriteObject(child, stream, writtenObjects);
                 }
+            }
+        }
+
+        private void BeforeWrite(PdfObject obj)
+        {
+            obj.BeforeWrite();
+            foreach (var child in obj.GetChildren())
+            {
+                BeforeWrite(child);
             }
         }
 
