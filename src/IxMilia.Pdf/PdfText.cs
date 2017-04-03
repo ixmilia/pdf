@@ -1,5 +1,6 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using IxMilia.Pdf.Extensions;
 using System.Text;
 
 namespace IxMilia.Pdf
@@ -27,7 +28,7 @@ namespace IxMilia.Pdf
             if (writerStatus.LastWrittenColor != Color)
             {
                 stringBuilder.Append("S\r\n");
-                stringBuilder.Append($"{Color.R} {Color.G} {Color.B} SC\r\n");
+                stringBuilder.Append($"{Color.AsWritable()} SC\r\n");
                 writerStatus.LastWrittenColor = Color;
             }
 
