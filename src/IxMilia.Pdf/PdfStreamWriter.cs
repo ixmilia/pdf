@@ -51,12 +51,12 @@ namespace IxMilia.Pdf
 
         private void WriteStrokeWidth(double strokeWidth)
         {
-            WriteLine($"{strokeWidth} w");
+            WriteLine($"{strokeWidth.AsInvariant()} w");
         }
 
         private void WriteColor(PdfColor color)
         {
-            WriteLine($"{color.AsWritable()} SC");
+            WriteLine($"{color} SC");
         }
 
         public override string ToString()

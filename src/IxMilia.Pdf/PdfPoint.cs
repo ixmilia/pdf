@@ -1,5 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using IxMilia.Pdf.Extensions;
+
 namespace IxMilia.Pdf
 {
     public struct PdfPoint
@@ -15,7 +17,7 @@ namespace IxMilia.Pdf
 
         public override string ToString()
         {
-            return $"{X:f2} {Y:f2}";
+            return $"{X.AsFixed()} {Y.AsFixed()}";
         }
 
         public static bool operator ==(PdfPoint a, PdfPoint b)

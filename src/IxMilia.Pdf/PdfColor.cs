@@ -1,5 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using IxMilia.Pdf.Extensions;
+
 namespace IxMilia.Pdf
 {
     public struct PdfColor
@@ -13,6 +15,11 @@ namespace IxMilia.Pdf
             R = r;
             G = g;
             B = b;
+        }
+
+        public override string ToString()
+        {
+            return $"{R.AsInvariant()} {G.AsInvariant()} {B.AsInvariant()}";
         }
 
         public static bool operator ==(PdfColor a, PdfColor b)

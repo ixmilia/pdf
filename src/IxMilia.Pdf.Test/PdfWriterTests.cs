@@ -1,5 +1,6 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Globalization;
 using Xunit;
 
 namespace IxMilia.Pdf.Test
@@ -11,7 +12,7 @@ namespace IxMilia.Pdf.Test
         {
             var file = new PdfFile();
             file.Pages.Add(new PdfPage(8.5 * 72, 11 * 72));
-            AssertFileEquals(file, @"
+            var expected = @"
 %PDF-1.6
 1 0 obj
 <</Type /Catalog /Pages 2 0 R>>
@@ -42,7 +43,20 @@ trailer <</Size 5 /Root 1 0 R>>
 startxref
 313
 %%EOF
-");
+";
+            AssertFileEquals(file, expected);
+
+            // verify that floating point values are written correctly
+            var existingCulture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+                AssertFileEquals(file, expected);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = existingCulture;
+            }
         }
 
         [Fact]
