@@ -13,7 +13,6 @@ namespace IxMilia.Pdf
         public double Width { get; set; }
         public double Height { get; set; }
         public IList<PdfStreamItem> Items => Stream.Items;
-        public IList<PdfFont> Fonts = new List<PdfFont>();
 
         public PdfPage(double width, double height)
         {
@@ -24,18 +23,9 @@ namespace IxMilia.Pdf
         public override IEnumerable<PdfObject> GetChildren()
         {
             yield return Stream;
-            foreach (var font in GetAllFonts())
+            foreach (var text in Items.OfType<PdfText>())
             {
-                yield return font;
-            }
-        }
-
-        public override void BeforeWrite()
-        {
-            var id = 1;
-            foreach (var font in GetAllFonts())
-            {
-                font.FontId = id++;
+                yield return text.Font;
             }
         }
 
@@ -52,7 +42,7 @@ namespace IxMilia.Pdf
 
         private IEnumerable<PdfFont> GetAllFonts()
         {
-            return Fonts.Concat(Items.OfType<PdfText>().Select(t => t.Font));
+            return Items.OfType<PdfText>().Select(t => t.Font);
         }
     }
 }

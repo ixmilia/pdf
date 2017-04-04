@@ -12,13 +12,14 @@ namespace IxMilia.Pdf
         private List<int> _offsets = new List<int>();
 
         public IList<PdfPage> Pages => _catalog.Pages.Pages;
+        public IList<PdfFont> Fonts => _catalog.Fonts;
 
         public void Save(Stream stream)
         {
             _offsets.Clear();
             var writtenObjects = new HashSet<PdfObject>();
-            AssignIds();
             BeforeWrite(_catalog);
+            AssignIds();
             stream.WriteLine("%PDF-1.6");
             WriteObject(_catalog, stream, writtenObjects);
 
@@ -65,15 +66,19 @@ namespace IxMilia.Pdf
         private void AssignIds()
         {
             var id = 1;
-            AssignIds(_catalog, ref id);
+            var seenObjects = new HashSet<PdfObject>();
+            AssignIds(_catalog, seenObjects, ref id);
         }
 
-        private static void AssignIds(PdfObject obj, ref int id)
+        private static void AssignIds(PdfObject obj, HashSet<PdfObject> seenObjects, ref int id)
         {
-            obj.Id = id++;
-            foreach (var child in obj.GetChildren())
+            if (seenObjects.Add(obj))
             {
-                AssignIds(child, ref id);
+                obj.Id = id++;
+                foreach (var child in obj.GetChildren())
+                {
+                    AssignIds(child, seenObjects, ref id);
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace IxMilia.Pdf.Test
@@ -157,6 +159,24 @@ BT
     (foo) Tj
 ET
 ");
+        }
+
+        [Fact]
+        public void VerifyFontsAreAddedOnSaveTest()
+        {
+            var file = new PdfFile();
+            var page = new PdfPage(8.5 * 72, 11 * 72);
+            var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint());
+            page.Items.Add(text);
+            file.Pages.Add(page);
+            Assert.Equal(0, file.Fonts.Count);
+
+            using (var ms = new MemoryStream())
+            {
+                file.Save(ms);
+            }
+
+            Assert.True(ReferenceEquals(text.Font, file.Fonts.Single()));
         }
     }
 }
