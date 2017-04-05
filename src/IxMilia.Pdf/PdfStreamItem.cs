@@ -4,13 +4,6 @@ namespace IxMilia.Pdf
 {
     public abstract class PdfStreamItem
     {
-        public PdfStreamState State { get; private set; }
-
-        protected PdfStreamItem(PdfStreamState state)
-        {
-            State = state;
-        }
-
         internal abstract void Write(PdfStreamWriter writer);
     }
 }

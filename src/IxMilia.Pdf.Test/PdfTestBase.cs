@@ -45,5 +45,12 @@ namespace IxMilia.Pdf.Test
             file.Pages.Add(page);
             AssertFileContains(file, expected);
         }
+
+        public void AssertPathBuilderContains(PdfPathBuilder builder, string expected)
+        {
+            var page = new PdfPage(8.5 * 72, 11 * 72);
+            page.Items.Add(builder.ToPath());
+            AssertPageContains(page, expected);
+        }
     }
 }

@@ -64,16 +64,16 @@ startxref
         [Fact]
         public void VerifyPageLinesTest()
         {
-            var file = new PdfFile();
-            var page = new PdfPage(8.5 * 72, 11 * 72);
-            page.Items.Add(new PdfLine(
-                new PdfPoint(0.0, 0.0),
-                new PdfPoint(8.5 * 72, 11 * 72)));
-            page.Items.Add(new PdfLine(
-                new PdfPoint(8.5 * 72, 0.0),
-                new PdfPoint(0.0, 11 * 72)));
-            file.Pages.Add(page);
-            AssertFileContains(file, @"
+            var builder = new PdfPathBuilder()
+            {
+                new PdfLine(
+                    new PdfPoint(0.0, 0.0),
+                    new PdfPoint(8.5 * 72, 11 * 72)),
+                new PdfLine(
+                    new PdfPoint(8.5 * 72, 0.0),
+                    new PdfPoint(0.0, 11 * 72))
+            };
+            AssertPathBuilderContains(builder, @"
 0.00 0.00 m
 612.00 792.00 l
 612.00 0.00 m
@@ -84,27 +84,25 @@ startxref
         [Fact]
         public void VerifyLineStrokeTest()
         {
-            var page = new PdfPage(8.5 * 72, 11 * 72);
-            page.Items.Add(new PdfLine(
-                new PdfPoint(0.0, 0.0),
-                new PdfPoint(1.0, 1.0)
-            ));
-            page.Items.Add(new PdfLine(
-                new PdfPoint(2.0, 2.0),
-                new PdfPoint(3.0, 3.0),
-                state: new PdfStreamState(strokeWidth: 1.1)
-            ));
-            page.Items.Add(new PdfLine(
-                new PdfPoint(4.0, 4.0),
-                new PdfPoint(5.0, 5.0),
-                state: new PdfStreamState(color: new PdfColor(1.0, 0.0, 0.0))
-            ));
-            page.Items.Add(new PdfLine(
-                new PdfPoint(6.0, 6.0),
-                new PdfPoint(7.0, 7.0),
-                state: new PdfStreamState(color: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2)
-            ));
-            AssertPageContains(page, @"
+            var builder = new PdfPathBuilder()
+            {
+                new PdfLine(
+                    new PdfPoint(0.0, 0.0),
+                    new PdfPoint(1.0, 1.0)),
+                new PdfLine(
+                    new PdfPoint(2.0, 2.0),
+                    new PdfPoint(3.0, 3.0),
+                    state: new PdfStreamState(strokeWidth: 1.1)),
+                new PdfLine(
+                    new PdfPoint(4.0, 4.0),
+                    new PdfPoint(5.0, 5.0),
+                    state: new PdfStreamState(color: new PdfColor(1.0, 0.0, 0.0))),
+                new PdfLine(
+                    new PdfPoint(6.0, 6.0),
+                    new PdfPoint(7.0, 7.0),
+                    state: new PdfStreamState(color: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
+            };
+            AssertPathBuilderContains(builder, @"
 0 w
 0 0 0 SC
 0.00 0.00 m

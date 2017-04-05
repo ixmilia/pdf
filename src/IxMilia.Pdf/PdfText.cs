@@ -11,15 +11,16 @@ namespace IxMilia.Pdf
         public double FontSize { get; set; }
         public PdfPoint Location { get; set; }
 
+        public PdfStreamState State { get; set; }
         public double CharacterWidth { get; set; }
 
         public PdfText(string value, PdfFont font, double fontSize, PdfPoint location, PdfStreamState state = default(PdfStreamState))
-            : base(state)
         {
             Value = value;
             Font = font;
             FontSize = fontSize;
             Location = location;
+            State = state;
         }
 
         internal override void Write(PdfStreamWriter writer)
