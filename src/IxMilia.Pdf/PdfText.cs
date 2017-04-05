@@ -10,11 +10,11 @@ namespace IxMilia.Pdf
         public PdfFont Font { get; set; }
         public double FontSize { get; set; }
         public PdfPoint Location { get; set; }
-        public PdfColor Color { get; set; }
 
         public double CharacterWidth { get; set; }
 
-        public PdfText(string value, PdfFont font, double fontSize, PdfPoint location)
+        public PdfText(string value, PdfFont font, double fontSize, PdfPoint location, PdfStreamState state = default(PdfStreamState))
+            : base(state)
         {
             Value = value;
             Font = font;
@@ -24,7 +24,7 @@ namespace IxMilia.Pdf
 
         internal override void Write(PdfStreamWriter writer)
         {
-            writer.SetState(color: Color);
+            writer.SetState(State);
             writer.WriteLine("BT");
             writer.WriteLine($"    /F{Font.FontId} {FontSize} Tf");
             writer.WriteLine($"    {Location} Td");

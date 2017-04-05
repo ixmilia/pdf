@@ -6,20 +6,17 @@ namespace IxMilia.Pdf
     {
         public PdfPoint P1 { get; set; }
         public PdfPoint P2 { get; set; }
-        public double StrokeWidth { get; set; }
-        public PdfColor Color { get; set; }
 
-        public PdfLine(PdfPoint p1, PdfPoint p2, double strokeWidth = 0.0, PdfColor color = default(PdfColor))
+        public PdfLine(PdfPoint p1, PdfPoint p2, PdfStreamState state = default(PdfStreamState))
+            : base(state)
         {
             P1 = p1;
             P2 = p2;
-            StrokeWidth = strokeWidth;
-            Color = color;
         }
 
         internal override void Write(PdfStreamWriter writer)
         {
-            writer.SetState(color: Color, strokeWidth: StrokeWidth);
+            writer.SetState(State);
             writer.WriteLine($"{P1} m");
             writer.WriteLine($"{P2} l");
         }

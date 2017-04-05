@@ -92,18 +92,17 @@ startxref
             page.Items.Add(new PdfLine(
                 new PdfPoint(2.0, 2.0),
                 new PdfPoint(3.0, 3.0),
-                strokeWidth: 1.1
+                state: new PdfStreamState(strokeWidth: 1.1)
             ));
             page.Items.Add(new PdfLine(
                 new PdfPoint(4.0, 4.0),
                 new PdfPoint(5.0, 5.0),
-                color: new PdfColor(1.0, 0.0, 0.0)
+                state: new PdfStreamState(color: new PdfColor(1.0, 0.0, 0.0))
             ));
             page.Items.Add(new PdfLine(
                 new PdfPoint(6.0, 6.0),
                 new PdfPoint(7.0, 7.0),
-                strokeWidth: 2.2,
-                color: new PdfColor(0.0, 1.0, 0.0)
+                state: new PdfStreamState(color: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2)
             ));
             AssertPageContains(page, @"
 0 w

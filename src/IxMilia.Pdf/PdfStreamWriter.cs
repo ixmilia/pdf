@@ -8,15 +8,14 @@ namespace IxMilia.Pdf
     internal class PdfStreamWriter
     {
         private StringBuilder _sb = new StringBuilder();
-        private PdfColor _lastColor = new PdfColor(); // black
-        private double _lastWidth = 0.0;
+        private PdfStreamState _lastState = default(PdfStreamState);
 
         public PdfStreamWriter()
         {
             // set initial state
             WriteLine("/DeviceRGB CS");
-            WriteStrokeWidth(_lastWidth);
-            WriteColor(_lastColor);
+            WriteStrokeWidth(_lastState.StrokeWidth);
+            WriteColor(_lastState.Color);
         }
 
         public void WriteLine(string value)
@@ -25,28 +24,24 @@ namespace IxMilia.Pdf
             _sb.Append("\r\n");
         }
 
-        public void SetState(PdfColor? color = null, double? strokeWidth = null)
+        public void SetState(PdfStreamState state)
         {
-            var newColor = color ?? _lastColor;
-            var newWidth = strokeWidth ?? _lastWidth;
-
-            if (newColor != _lastColor || newWidth != _lastWidth)
+            if (state.Color != _lastState.Color || state.StrokeWidth != _lastState.StrokeWidth)
             {
                 Stroke();
             }
 
-            if (newWidth != _lastWidth)
+            if (state.StrokeWidth != _lastState.StrokeWidth)
             {
-                WriteStrokeWidth(newWidth);
+                WriteStrokeWidth(state.StrokeWidth);
             }
 
-            if (newColor != _lastColor)
+            if (state.Color != _lastState.Color)
             {
-                WriteColor(newColor);
+                WriteColor(state.Color);
             }
 
-            _lastWidth = newWidth;
-            _lastColor = newColor;
+            _lastState = state;
         }
 
         private void WriteStrokeWidth(double strokeWidth)
