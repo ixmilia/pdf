@@ -13,19 +13,26 @@ using System.IO;
 using IxMilia.Pdf;
 // ...
 
-PdfFile file = new PdfFile();
+// create the page
 PdfPage page = new PdfPage(8.5 * 72, 11 * 72); // 8.5" x 11"
-file.Pages.Add(page);
-
-// line from the top left corner to the bottom right
-// (the bottom left corner is the origin)
 PdfPoint topLeft = new PdfPoint(0.0, page.Height);
-PdfPoint bottomRight = new PdfPoint(page.Width, 0.0);
-page.Items.Add(new PdfLine(topLeft, bottomRight));
-
-// text in the bottom left corner
 PdfPoint bottomLeft = new PdfPoint(0.0, 0.0);
+PdfPoint bottomRight = new PdfPoint(page.Width, 0.0);
+
+// add text
 page.Items.Add(new PdfText("some text", new PdfFont("Helvetica"), 12.0, bottomLeft));
+
+// add a line and circle
+PdfPathBuilder builder = new PdfPathBuilder()
+{
+    new PdfLine(topLeft, bottomRight),
+    new PdfCircle(new PdfPoint(page.Width / 2.0, page.Height / 2.0), page.Width / 2.0)
+};
+page.Items.Add(builder.ToPath());
+
+// create the file and add the page
+PdfFile file = new PdfFile();
+file.Pages.Add(page);
 
 using (FileStream fs = new FileStream(@"C:\Path\To\File.pdf", FileMode.Create))
 {
