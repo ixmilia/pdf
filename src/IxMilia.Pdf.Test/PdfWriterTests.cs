@@ -181,7 +181,7 @@ ET
         {
             var builder = new PdfPathBuilder()
             {
-                new PdfCircle(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5* 0.5 * 72)
+                new PdfCircle(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72)
             };
             AssertPathBuilderContains(builder, @"
 306.00 702.00 m
@@ -189,6 +189,22 @@ ET
 612.00 227.11 474.89 90.00 306.00 90.00 c
 137.11 90.00 0.00 227.11 0.00 396.00 c
 0.00 564.89 137.11 702.00 306.00 702.00 c
+");
+        }
+
+        [Fact]
+        public void VerifyEllipseTest()
+        {
+            var builder = new PdfPathBuilder()
+            {
+                new PdfEllipse(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72, 11 * 0.5 * 72)
+            };
+            AssertPathBuilderContains(builder, @"
+306.00 792.00 m
+474.89 792.00 612.00 614.56 612.00 396.00 c
+612.00 177.44 474.89 0.00 306.00 0.00 c
+137.11 0.00 0.00 177.44 0.00 396.00 c
+0.00 614.56 137.11 792.00 306.00 792.00 c
 ");
         }
     }
