@@ -20,6 +20,36 @@ namespace IxMilia.Pdf
             return $"{X.AsFixed()} {Y.AsFixed()}";
         }
 
+        public static PdfPoint operator +(PdfPoint a, PdfPoint b)
+        {
+            return new PdfPoint(a.X + b.X, a.Y + b.Y);
+        }
+
+        public static PdfPoint operator -(PdfPoint a, PdfPoint b)
+        {
+            return new PdfPoint(a.X - b.X, a.Y - b.Y);
+        }
+
+        public static PdfPoint operator -(PdfPoint p)
+        {
+            return p * -1.0;
+        }
+
+        public static PdfPoint operator *(PdfPoint p, double s)
+        {
+            return new PdfPoint(p.X * s, p.Y * s);
+        }
+
+        public static PdfPoint operator *(double s, PdfPoint p)
+        {
+            return p * s;
+        }
+
+        public static PdfPoint operator /(PdfPoint p, double s)
+        {
+            return p * (1.0 / s);
+        }
+
         public static bool operator ==(PdfPoint a, PdfPoint b)
         {
             if (ReferenceEquals(a, b))
