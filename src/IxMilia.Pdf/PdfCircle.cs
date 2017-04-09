@@ -10,7 +10,7 @@ namespace IxMilia.Pdf
         public override double RadiusY { get => Radius; set => Radius = value; }
 
         public PdfCircle(PdfPoint center, double radius, PdfStreamState state = default(PdfStreamState))
-            : base(center, radius, radius, state)
+            : base(center, radius, radius, state: state)
         {
             Radius = radius;
         }

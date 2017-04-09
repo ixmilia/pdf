@@ -1,5 +1,6 @@
 ﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 
 namespace IxMilia.Pdf
@@ -11,20 +12,25 @@ namespace IxMilia.Pdf
         public PdfPoint Center { get; set; }
         public virtual double RadiusX { get; set; }
         public virtual double RadiusY { get; set; }
+        public double RotationAngle { get; set; }
         public PdfStreamState State { get; set; }
 
-        public PdfEllipse(PdfPoint center, double radiusX, double radiusY, PdfStreamState state = default(PdfStreamState))
+        public PdfEllipse(PdfPoint center, double radiusX, double radiusY, double rotationAngle = 0.0, PdfStreamState state = default(PdfStreamState))
         {
             Center = center;
             RadiusX = radiusX;
             RadiusY = radiusY;
+            RotationAngle = rotationAngle;
             State = state;
         }
 
         public IEnumerable<PdfPathCommand> GetCommands()
         {
-            var xaxis = new PdfPoint(RadiusX, 0.0);
-            var yaxis = new PdfPoint(0.0, RadiusY);
+            var sin = Math.Sin(RotationAngle);
+            var cos = Math.Cos(RotationAngle);
+
+            var xaxis = new PdfPoint(RadiusX * cos, RadiusX * sin);
+            var yaxis = new PdfPoint(-RadiusY * sin, RadiusY * cos);
 
             var right = Center + xaxis;
             var top = Center + yaxis;

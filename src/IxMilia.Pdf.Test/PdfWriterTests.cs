@@ -1,5 +1,6 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -205,6 +206,22 @@ ET
 137.11 792.00 0.00 614.56 0.00 396.00 c
 0.00 177.44 137.11 0.00 306.00 0.00 c
 474.89 0.00 612.00 177.44 612.00 396.00 c
+");
+        }
+
+        [Fact]
+        public void VerifyRotatedEllipseTest()
+        {
+            var builder = new PdfPathBuilder()
+            {
+                new PdfEllipse(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72, 11 * 0.25 * 72, rotationAngle: Math.PI / 6.0)
+            };
+            AssertPathBuilderContains(builder, @"
+571.00 549.00 m
+516.36 643.64 353.26 651.92 207.00 567.47 c
+60.74 483.03 -13.64 337.64 41.00 243.00 c
+95.64 148.36 258.74 140.08 405.00 224.53 c
+551.26 308.97 625.64 454.36 571.00 549.00 c
 ");
         }
     }
