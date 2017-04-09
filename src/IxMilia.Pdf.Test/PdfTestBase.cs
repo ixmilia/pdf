@@ -48,7 +48,7 @@ namespace IxMilia.Pdf.Test
 
         public void AssertPathBuilderContains(PdfPathBuilder builder, string expected)
         {
-            var page = new PdfPage(8.5 * 72, 11 * 72);
+            var page = PdfPage.NewLetter();
             page.Items.Add(builder.ToPath());
             AssertPageContains(page, expected);
         }

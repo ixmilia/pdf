@@ -13,7 +13,7 @@ namespace IxMilia.Pdf.Test
         public void WriteEmptyFileTest()
         {
             var file = new PdfFile();
-            file.Pages.Add(new PdfPage(8.5 * 72, 11 * 72));
+            file.Pages.Add(PdfPage.NewLetter());
             var expected = @"
 %PDF-1.6
 1 0 obj
@@ -129,7 +129,7 @@ S
         public void VerifyPageTextAndFontTest()
         {
             var file = new PdfFile();
-            var page = new PdfPage(8.5 * 72, 11 * 72);
+            var page = PdfPage.NewLetter();
             var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72));
             page.Items.Add(text);
             file.Pages.Add(page);
@@ -162,7 +162,7 @@ ET
         public void VerifyFontsAreAddedOnSaveTest()
         {
             var file = new PdfFile();
-            var page = new PdfPage(8.5 * 72, 11 * 72);
+            var page = PdfPage.NewLetter();
             var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint());
             page.Items.Add(text);
             file.Pages.Add(page);

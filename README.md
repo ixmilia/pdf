@@ -14,7 +14,7 @@ using IxMilia.Pdf;
 // ...
 
 // create the page
-PdfPage page = new PdfPage(8.5 * 72, 11 * 72); // 8.5" x 11"
+PdfPage page = PdfPage.NewLetter(); // 8.5" x 11"
 PdfPoint topLeft = new PdfPoint(0.0, page.Height);
 PdfPoint bottomLeft = new PdfPoint(0.0, 0.0);
 PdfPoint bottomRight = new PdfPoint(page.Width, 0.0);
