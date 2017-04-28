@@ -178,6 +178,30 @@ ET
         }
 
         [Fact]
+        public void VerifyFontsAreReusedTest()
+        {
+            var file = new PdfFile();
+            var page = PdfPage.NewLetter();
+            var font = new PdfFont("Helvetica");
+
+            // font used twice on one page
+            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
+            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
+            file.Pages.Add(page);
+
+            // font used a third time on another page
+            page = PdfPage.NewLetter();
+            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
+            file.Pages.Add(page);
+
+            // font objects should only be listed once
+            AssertFileContains(file, "/Resources <</Font <</F1 5 0 R>>>>");
+            AssertFileDoesNotContain(file, "/Resources <</Font <</F1 5 0 R>> /Font <</F1 5 0 R>>"); // duplicate font resource object
+            AssertFileDoesNotContain(file, "/Resources <</Font <</F1 5 0 R>> /Font <</F2 6 0 R>>"); // duplicate font resource
+            AssertFileContainsCount(file, "<</Type /Font /Subtype /Type1 /BaseFont /Helvetica>>", 1);
+        }
+
+        [Fact]
         public void VerifyCircleTest()
         {
             var builder = new PdfPathBuilder()

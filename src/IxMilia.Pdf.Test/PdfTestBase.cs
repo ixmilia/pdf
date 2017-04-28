@@ -39,6 +39,35 @@ namespace IxMilia.Pdf.Test
             Assert.Contains(NormalizeCrLf(expected.Trim()), actual);
         }
 
+        public void AssertFileDoesNotContain(PdfFile file, string notExpected)
+        {
+            var actual = GetFileContents(file);
+            Assert.DoesNotContain(NormalizeCrLf(notExpected.Trim()), actual);
+        }
+
+        public void AssertFileContainsCount(PdfFile file, string expected, int expectedCount)
+        {
+            var actual = GetFileContents(file);
+            expected = NormalizeCrLf(expected.Trim());
+            var count = 0;
+            var offset = 0;
+            while (true)
+            {
+                offset = actual.IndexOf(expected, offset);
+                if (offset >= 0)
+                {
+                    count++;
+                    offset++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Assert.Equal(expectedCount, count);
+        }
+
         public void AssertPageContains(PdfPage page, string expected)
         {
             var file = new PdfFile();

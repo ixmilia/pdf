@@ -46,9 +46,13 @@ namespace IxMilia.Pdf
         protected override byte[] GetContent()
         {
             var resources = new List<string>();
+            var seenFonts = new HashSet<PdfFont>();
             foreach (var font in GetAllFonts())
             {
-                resources.Add($"/Font <</F{font.FontId} {font.Id.AsObjectReference()}>>");
+                if (seenFonts.Add(font))
+                {
+                    resources.Add($"/Font <</F{font.FontId} {font.Id.AsObjectReference()}>>");
+                }
             }
 
             return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsFixed()} {Height.AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
