@@ -4,21 +4,17 @@ using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
 {
-    public class PdfFont : PdfObject
+    public abstract class PdfFont : PdfObject
     {
         internal int FontId { get; set; }
 
-        public string SubType { get; set; } = "Type1";
-        public string BaseFont { get; set; }
+        public abstract string SubType { get; }
 
-        public PdfFont(string baseFont)
-        {
-            BaseFont = baseFont;
-        }
+        protected abstract string GetAdditionalProperties();
 
         protected override byte[] GetContent()
         {
-            return $"<</Type /Font /Subtype /{SubType} /BaseFont /{BaseFont}>>".GetNewLineBytes();
+            return $"<</Type /Font /Subtype /{SubType} {GetAdditionalProperties()}>>".GetNewLineBytes();
         }
     }
 }

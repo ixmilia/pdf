@@ -131,7 +131,7 @@ S
         {
             var file = new PdfFile();
             var page = PdfPage.NewLetter();
-            var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72));
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72));
             page.Items.Add(text);
             file.Pages.Add(page);
             AssertFileContains(file, @"
@@ -164,7 +164,7 @@ ET
         {
             var file = new PdfFile();
             var page = PdfPage.NewLetter();
-            var text = new PdfText("foo", new PdfFont("Helvetica"), 12.0, new PdfPoint());
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), 12.0, new PdfPoint());
             page.Items.Add(text);
             file.Pages.Add(page);
             Assert.Equal(0, file.Fonts.Count);
@@ -182,7 +182,7 @@ ET
         {
             var file = new PdfFile();
             var page = PdfPage.NewLetter();
-            var font = new PdfFont("Helvetica");
+            var font = new PdfFontType1(PdfFontType1Type.Helvetica);
 
             // font used twice on one page
             page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
