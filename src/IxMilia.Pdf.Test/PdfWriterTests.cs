@@ -27,11 +27,11 @@ endobj
 <</Type /Page /Parent 2 0 R /Contents 4 0 R /MediaBox [0 0 612.00 792.00] /Resources <<>>>>
 endobj
 4 0 obj
-<</Length 33>>
+<</Length 28>>
 stream
-/DeviceRGB CS
 0 w
-0 0 0 SC
+0 0 0 RG
+0 0 0 rg
 S
 endstream
 endobj
@@ -44,7 +44,7 @@ xref
 0000000228 00000 n
 trailer <</Size 5 /Root 1 0 R>>
 startxref
-313
+308
 %%EOF
 ";
             AssertFileEquals(file, expected);
@@ -97,15 +97,16 @@ startxref
                 new PdfLine(
                     new PdfPoint(4.0, 4.0),
                     new PdfPoint(5.0, 5.0),
-                    state: new PdfStreamState(color: new PdfColor(1.0, 0.0, 0.0))),
+                    state: new PdfStreamState(strokeColor: new PdfColor(1.0, 0.0, 0.0))),
                 new PdfLine(
                     new PdfPoint(6.0, 6.0),
                     new PdfPoint(7.0, 7.0),
-                    state: new PdfStreamState(color: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
+                    state: new PdfStreamState(strokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
             };
             AssertPathBuilderContains(builder, @"
 0 w
-0 0 0 SC
+0 0 0 RG
+0 0 0 rg
 0.00 0.00 m
 1.00 1.00 l
 S
@@ -114,12 +115,57 @@ S
 3.00 3.00 l
 S
 0 w
-1 0 0 SC
+1 0 0 RG
 4.00 4.00 m
 5.00 5.00 l
 S
 2.2 w
-0 1 0 SC
+0 1 0 RG
+6.00 6.00 m
+7.00 7.00 l
+S
+");
+        }
+
+        [Fact]
+        public void VerifyFillTest()
+        {
+            var builder = new PdfPathBuilder()
+            {
+                new PdfLine(
+                    new PdfPoint(0.0, 0.0),
+                    new PdfPoint(1.0, 1.0)),
+                new PdfLine(
+                    new PdfPoint(2.0, 2.0),
+                    new PdfPoint(3.0, 3.0),
+                    state: new PdfStreamState(strokeWidth: 1.1)),
+                new PdfLine(
+                    new PdfPoint(4.0, 4.0),
+                    new PdfPoint(5.0, 5.0),
+                    state: new PdfStreamState(nonStrokeColor: new PdfColor(1.0, 0.0, 0.0))),
+                new PdfLine(
+                    new PdfPoint(6.0, 6.0),
+                    new PdfPoint(7.0, 7.0),
+                    state: new PdfStreamState(nonStrokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
+            };
+            AssertPathBuilderContains(builder, @"
+0 w
+0 0 0 RG
+0 0 0 rg
+0.00 0.00 m
+1.00 1.00 l
+S
+1.1 w
+2.00 2.00 m
+3.00 3.00 l
+S
+0 w
+1 0 0 rg
+4.00 4.00 m
+5.00 5.00 l
+S
+2.2 w
+0 1 0 rg
 6.00 6.00 m
 7.00 7.00 l
 S

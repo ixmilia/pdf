@@ -13,9 +13,9 @@ namespace IxMilia.Pdf
         public PdfStreamWriter()
         {
             // set initial state
-            WriteLine("/DeviceRGB CS");
             WriteStrokeWidth(_lastState.StrokeWidth);
-            WriteColor(_lastState.Color);
+            WriteStrokeColor(_lastState.StrokeColor);
+            WriteNonStrokeColor(_lastState.NonStrokeColor);
         }
 
         public void WriteLine(string value)
@@ -26,7 +26,7 @@ namespace IxMilia.Pdf
 
         public void SetState(PdfStreamState state)
         {
-            if (state.Color != _lastState.Color || state.StrokeWidth != _lastState.StrokeWidth)
+            if (state.StrokeColor != _lastState.StrokeColor || state.StrokeWidth != _lastState.StrokeWidth)
             {
                 Stroke();
             }
@@ -36,9 +36,14 @@ namespace IxMilia.Pdf
                 WriteStrokeWidth(state.StrokeWidth);
             }
 
-            if (state.Color != _lastState.Color)
+            if (state.StrokeColor != _lastState.StrokeColor)
             {
-                WriteColor(state.Color);
+                WriteStrokeColor(state.StrokeColor);
+            }
+
+            if (state.NonStrokeColor != _lastState.NonStrokeColor)
+            {
+                WriteNonStrokeColor(state.NonStrokeColor);
             }
 
             _lastState = state;
@@ -49,9 +54,14 @@ namespace IxMilia.Pdf
             WriteLine($"{strokeWidth.AsInvariant()} w");
         }
 
-        private void WriteColor(PdfColor color)
+        private void WriteStrokeColor(PdfColor color)
         {
-            WriteLine($"{color} SC");
+            WriteLine($"{color} RG");
+        }
+
+        private void WriteNonStrokeColor(PdfColor color)
+        {
+            WriteLine($"{color} rg");
         }
 
         public override string ToString()

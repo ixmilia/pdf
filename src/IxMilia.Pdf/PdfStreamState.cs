@@ -4,12 +4,14 @@ namespace IxMilia.Pdf
 {
     public struct PdfStreamState
     {
-        public PdfColor Color { get; set; }
+        public PdfColor NonStrokeColor { get; set; }
+        public PdfColor StrokeColor { get; set; }
         public double StrokeWidth { get; set; }
 
-        public PdfStreamState(PdfColor? color = null, double? strokeWidth = null)
+        public PdfStreamState(PdfColor? nonStrokeColor = null, PdfColor? strokeColor = null, double? strokeWidth = null)
         {
-            Color = color ?? default(PdfColor);
+            NonStrokeColor = nonStrokeColor ?? default(PdfColor);
+            StrokeColor = strokeColor ?? default(PdfColor);
             StrokeWidth = strokeWidth ?? default(double);
         }
     }
