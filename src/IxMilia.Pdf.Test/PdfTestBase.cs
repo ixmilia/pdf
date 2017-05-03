@@ -81,5 +81,11 @@ namespace IxMilia.Pdf.Test
             page.Items.Add(builder.ToPath());
             AssertPageContains(page, expected);
         }
+
+        public void AssertPathItemContains(IPdfPathItem pathItem, string expected)
+        {
+            var builder = new PdfPathBuilder() { pathItem };
+            AssertPathBuilderContains(builder, expected);
+        }
     }
 }

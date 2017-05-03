@@ -1,5 +1,6 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
@@ -18,6 +19,15 @@ namespace IxMilia.Pdf
         public override string ToString()
         {
             return $"{X.AsFixed()} {Y.AsFixed()}";
+        }
+
+        public PdfPoint RotateAboutOrigin(double theta)
+        {
+            var sin = Math.Sin(theta);
+            var cos = Math.Cos(theta);
+            var xprime = cos * X - sin * Y;
+            var yprime = sin * X + cos * Y;
+            return new PdfPoint(xprime, yprime);
         }
 
         public static PdfPoint operator +(PdfPoint a, PdfPoint b)

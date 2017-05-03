@@ -10,6 +10,14 @@ namespace IxMilia.Pdf.Test
 {
     public class PdfWriterTests : PdfTestBase
     {
+        public const double PageWidth = 8.5 * 72.0;
+        public const double PageHeight = 11.0 * 72.0;
+        public const double ThirtyDegrees = Math.PI / 6.0;
+        public const double FortyFiveDegrees = Math.PI / 4.0;
+        public const double SixtyDegrees = Math.PI / 3.0;
+        public const double OneHundredEightyDegrees = Math.PI;
+        public static PdfPoint PageCenter = new PdfPoint(PageWidth / 2.0, PageHeight / 2.0);
+
         [Fact]
         public void WriteEmptyFileTest()
         {
@@ -69,10 +77,10 @@ startxref
             {
                 new PdfLine(
                     new PdfPoint(0.0, 0.0),
-                    new PdfPoint(8.5 * 72, 11 * 72)),
+                    new PdfPoint(PageWidth, PageHeight)),
                 new PdfLine(
-                    new PdfPoint(8.5 * 72, 0.0),
-                    new PdfPoint(0.0, 11 * 72))
+                    new PdfPoint(PageWidth, 0.0),
+                    new PdfPoint(0.0, PageHeight))
             };
             AssertPathBuilderContains(builder, @"
 0.00 0.00 m
@@ -250,48 +258,125 @@ ET
         [Fact]
         public void VerifyCircleTest()
         {
-            var builder = new PdfPathBuilder()
-            {
-                new PdfCircle(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72)
-            };
-            AssertPathBuilderContains(builder, @"
+            AssertPathItemContains(new PdfCircle(PageCenter, PageWidth / 2.0), @"
 612.00 396.00 m
-612.00 564.89 474.89 702.00 306.00 702.00 c
-137.11 702.00 0.00 564.89 0.00 396.00 c
-0.00 227.11 137.11 90.00 306.00 90.00 c
-474.89 90.00 612.00 227.11 612.00 396.00 c
+612.00 565.00 475.00 702.00 306.00 702.00 c
+306.00 702.00 m
+137.00 702.00 0.00 565.00 0.00 396.00 c
+0.00 396.00 m
+0.00 227.00 137.00 90.00 306.00 90.00 c
+306.00 90.00 m
+475.00 90.00 612.00 227.00 612.00 396.00 c
 ");
         }
 
         [Fact]
         public void VerifyEllipseTest()
         {
-            var builder = new PdfPathBuilder()
-            {
-                new PdfEllipse(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72, 11 * 0.5 * 72)
-            };
-            AssertPathBuilderContains(builder, @"
+            AssertPathItemContains(new PdfEllipse(PageCenter, PageWidth / 2.0, PageHeight / 2.0), @"
 612.00 396.00 m
-612.00 614.56 474.89 792.00 306.00 792.00 c
-137.11 792.00 0.00 614.56 0.00 396.00 c
-0.00 177.44 137.11 0.00 306.00 0.00 c
-474.89 0.00 612.00 177.44 612.00 396.00 c
+612.00 614.70 475.00 792.00 306.00 792.00 c
+306.00 792.00 m
+137.00 792.00 0.00 614.70 0.00 396.00 c
+0.00 396.00 m
+0.00 177.30 137.00 0.00 306.00 0.00 c
+306.00 0.00 m
+475.00 0.00 612.00 177.30 612.00 396.00 c
 ");
         }
 
         [Fact]
         public void VerifyRotatedEllipseTest()
         {
-            var builder = new PdfPathBuilder()
-            {
-                new PdfEllipse(new PdfPoint(8.5 * 0.5 * 72, 11 * 0.5 * 72), 8.5 * 0.5 * 72, 11 * 0.25 * 72, rotationAngle: Math.PI / 6.0)
-            };
-            AssertPathBuilderContains(builder, @"
+            AssertPathItemContains(new PdfEllipse(PageCenter, PageWidth / 2.0, PageHeight / 4.0, rotationAngle: ThirtyDegrees), @"
 571.00 549.00 m
-516.36 643.64 353.26 651.92 207.00 567.47 c
-60.74 483.03 -13.64 337.64 41.00 243.00 c
-95.64 148.36 258.74 140.08 405.00 224.53 c
-551.26 308.97 625.64 454.36 571.00 549.00 c
+516.33 643.70 353.36 651.97 207.00 567.47 c
+207.00 567.47 m
+60.64 482.97 -13.68 337.70 41.00 243.00 c
+41.00 243.00 m
+95.67 148.30 258.64 140.03 405.00 224.53 c
+405.00 224.53 m
+551.36 309.03 625.68 454.30 571.00 549.00 c
+");
+        }
+
+        [Fact]
+        public void VerifyCircularArcsTest()
+        {
+            // partially fills first quadrant
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: 0.0, endAngle: FortyFiveDegrees), @"
+612.00 396.00 m
+612.00 477.16 579.76 554.99 522.37 612.37 c
+");
+
+            // partially fills first quadrant, fully fills second quadrant, partially fills third quadrant
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: FortyFiveDegrees, endAngle: OneHundredEightyDegrees + FortyFiveDegrees), @"
+522.37 612.37 m
+464.99 669.76 387.16 702.00 306.00 702.00 c
+306.00 702.00 m
+137.00 702.00 0.00 565.00 0.00 396.00 c
+0.00 396.00 m
+0.00 314.84 32.24 237.01 89.63 179.63 c
+");
+
+            // partially fills fourth quadrant, partially fills first quadrant, spans zero
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: -FortyFiveDegrees, endAngle: FortyFiveDegrees), @"
+612.00 396.00 m
+612.00 477.16 579.76 554.99 522.37 612.37 c
+522.37 179.63 m
+579.76 237.01 612.00 314.84 612.00 396.00 c
+");
+
+            // partially fills first and fourth quadrants, fully fills second and third
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: FortyFiveDegrees, endAngle: -FortyFiveDegrees), @"
+522.37 612.37 m
+464.99 669.76 387.16 702.00 306.00 702.00 c
+306.00 702.00 m
+137.00 702.00 0.00 565.00 0.00 396.00 c
+0.00 396.00 m
+0.00 227.00 137.00 90.00 306.00 90.00 c
+306.00 90.00 m
+387.16 90.00 464.99 122.24 522.37 179.63 c
+");
+
+            // partially fills first quadrant, but doesn't touch either end
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: ThirtyDegrees, endAngle: SixtyDegrees), @"
+571.00 549.00 m
+544.15 595.52 505.52 634.15 459.00 661.00 c
+");
+
+            // has two tails in first quadrant and fully fills the other three, spans zero
+            AssertPathItemContains(new PdfArc(PageCenter, radius: PageWidth / 2, startAngle: SixtyDegrees, endAngle: ThirtyDegrees), @"
+459.00 661.00 m
+412.48 687.86 359.71 702.00 306.00 702.00 c
+612.00 396.00 m
+612.00 449.71 597.86 502.48 571.00 549.00 c
+306.00 702.00 m
+137.00 702.00 0.00 565.00 0.00 396.00 c
+0.00 396.00 m
+0.00 227.00 137.00 90.00 306.00 90.00 c
+306.00 90.00 m
+475.00 90.00 612.00 227.00 612.00 396.00 c
+");
+        }
+
+        [Fact]
+        public void VerifyElipticalArcsTest()
+        {
+            // partially fills first quadrant, fully fills second
+            AssertPathItemContains(new PdfEllipse(PageCenter, radiusX: PageWidth / 2, radiusY: PageWidth / 4, startAngle: FortyFiveDegrees, endAngle: OneHundredEightyDegrees), @"
+522.37 504.19 m
+464.99 532.88 387.16 549.00 306.00 549.00 c
+306.00 549.00 m
+137.00 549.00 0.00 480.50 0.00 396.00 c
+");
+
+            // partially fills first quadrant, fully fills second, entire ellipse rotated
+            AssertPathItemContains(new PdfEllipse(PageCenter, radiusX: PageWidth / 2, radiusY: PageWidth / 4, startAngle: FortyFiveDegrees, endAngle: OneHundredEightyDegrees, rotationAngle: ThirtyDegrees), @"
+439.29 597.88 m
+375.25 594.04 299.78 569.08 229.50 528.50 c
+229.50 528.50 m
+83.14 444.00 -1.25 316.18 41.00 243.00 c
 ");
         }
     }
