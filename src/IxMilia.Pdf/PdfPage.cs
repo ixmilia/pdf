@@ -1,5 +1,6 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IxMilia.Pdf.Extensions;
@@ -9,6 +10,7 @@ namespace IxMilia.Pdf
     public class PdfPage : PdfObject
     {
         public const double PointsPerInch = 72.0;
+        public const double PointsPerMm = PointsPerInch / 25.4;
         public const double LetterWidth = 8.5;
         public const double LetterHeight = 11.0;
 
@@ -32,6 +34,25 @@ namespace IxMilia.Pdf
         public static PdfPage NewLetterLandscape()
         {
             return new PdfPage(LetterHeight * PointsPerInch, LetterWidth * PointsPerInch);
+        }
+
+        public static PdfPage NewASeries(int n, bool isPortrait = true)
+        {
+            var longSide = (int)(1000.0 / Math.Pow(2.0, (2.0 * n - 1.0) / 4.0) + 0.2);
+            var shortSide = (int)(longSide / Math.Sqrt(2.0));
+            switch (n)
+            {
+                case 0:
+                case 3:
+                case 6:
+                    // manually correct rounding errors
+                    shortSide++;
+                    break;
+            }
+
+            var width = isPortrait ? shortSide : longSide;
+            var height = isPortrait ? longSide : shortSide;
+            return new PdfPage(width * PointsPerMm, height * PointsPerMm);
         }
 
         public override IEnumerable<PdfObject> GetChildren()
