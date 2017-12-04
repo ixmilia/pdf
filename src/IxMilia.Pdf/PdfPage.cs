@@ -9,18 +9,16 @@ namespace IxMilia.Pdf
 {
     public class PdfPage : PdfObject
     {
-        public const double PointsPerInch = 72.0;
-        public const double PointsPerMm = PointsPerInch / 25.4;
         public const double LetterWidth = 8.5;
         public const double LetterHeight = 11.0;
 
         internal PdfStream Stream { get; } = new PdfStream();
 
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public PdfMeasurement Width { get; set; }
+        public PdfMeasurement Height { get; set; }
         public IList<PdfStreamItem> Items => Stream.Items;
 
-        public PdfPage(double width, double height)
+        public PdfPage(PdfMeasurement width, PdfMeasurement height)
         {
             Width = width;
             Height = height;
@@ -28,12 +26,12 @@ namespace IxMilia.Pdf
 
         public static PdfPage NewLetter()
         {
-            return new PdfPage(LetterWidth * PointsPerInch, LetterHeight * PointsPerInch);
+            return new PdfPage(PdfMeasurement.Inches(LetterWidth), PdfMeasurement.Inches(LetterHeight));
         }
 
         public static PdfPage NewLetterLandscape()
         {
-            return new PdfPage(LetterHeight * PointsPerInch, LetterWidth * PointsPerInch);
+            return new PdfPage(PdfMeasurement.Inches(LetterHeight), PdfMeasurement.Inches(LetterWidth));
         }
 
         public static PdfPage NewASeries(int n, bool isPortrait = true)
@@ -52,7 +50,7 @@ namespace IxMilia.Pdf
 
             var width = isPortrait ? shortSide : longSide;
             var height = isPortrait ? longSide : shortSide;
-            return new PdfPage(width * PointsPerMm, height * PointsPerMm);
+            return new PdfPage(PdfMeasurement.Mm(width), PdfMeasurement.Mm(height));
         }
 
         public override IEnumerable<PdfObject> GetChildren()
@@ -76,7 +74,7 @@ namespace IxMilia.Pdf
                 }
             }
 
-            return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsFixed()} {Height.AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
+            return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsPoints().AsFixed()} {Height.AsPoints().AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
         }
 
         private IEnumerable<PdfFont> GetAllFonts()

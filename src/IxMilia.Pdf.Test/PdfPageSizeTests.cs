@@ -10,12 +10,12 @@ namespace IxMilia.Pdf.Test
         public void A4SizeTest()
         {
             // portrait
-            Assert.Equal(210, PdfPage.NewASeries(4, isPortrait: true).Width / PdfPage.PointsPerMm);
-            Assert.Equal(297, PdfPage.NewASeries(4, isPortrait: true).Height / PdfPage.PointsPerMm);
+            Assert.Equal(210, PdfPage.NewASeries(4, isPortrait: true).Width.ConvertTo(PdfMeasurementType.Mm).RawValue);
+            Assert.Equal(297, PdfPage.NewASeries(4, isPortrait: true).Height.ConvertTo(PdfMeasurementType.Mm).RawValue);
 
             // landscape
-            Assert.Equal(297, PdfPage.NewASeries(4, isPortrait: false).Width / PdfPage.PointsPerMm);
-            Assert.Equal(210, PdfPage.NewASeries(4, isPortrait: false).Height / PdfPage.PointsPerMm);
+            Assert.Equal(297, PdfPage.NewASeries(4, isPortrait: false).Width.ConvertTo(PdfMeasurementType.Mm).RawValue);
+            Assert.Equal(210, PdfPage.NewASeries(4, isPortrait: false).Height.ConvertTo(PdfMeasurementType.Mm).RawValue);
         }
 
         [Fact]
@@ -48,12 +48,12 @@ namespace IxMilia.Pdf.Test
 
         private static int GetAPageWidth(int n)
         {
-            return (int)(PdfPage.NewASeries(n).Width / PdfPage.PointsPerMm);
+            return (int)(PdfPage.NewASeries(n).Width.ConvertTo(PdfMeasurementType.Mm).RawValue);
         }
 
         private static int GetAPageHeight(int n)
         {
-            return (int)(PdfPage.NewASeries(n).Height / PdfPage.PointsPerMm);
+            return (int)(PdfPage.NewASeries(n).Height.ConvertTo(PdfMeasurementType.Mm).RawValue);
         }
     }
 }
