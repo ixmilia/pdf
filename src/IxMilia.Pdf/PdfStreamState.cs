@@ -6,13 +6,13 @@ namespace IxMilia.Pdf
     {
         public PdfColor NonStrokeColor { get; set; }
         public PdfColor StrokeColor { get; set; }
-        public double StrokeWidth { get; set; }
+        public PdfMeasurement StrokeWidth { get; set; }
 
-        public PdfStreamState(PdfColor? nonStrokeColor = null, PdfColor? strokeColor = null, double? strokeWidth = null)
+        public PdfStreamState(PdfColor? nonStrokeColor = null, PdfColor? strokeColor = null, PdfMeasurement? strokeWidth = null)
         {
             NonStrokeColor = nonStrokeColor ?? default(PdfColor);
             StrokeColor = strokeColor ?? default(PdfColor);
-            StrokeWidth = strokeWidth ?? default(double);
+            StrokeWidth = strokeWidth ?? default(PdfMeasurement);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace IxMilia.Pdf
     public class PdfEllipse : IPdfPathItem
     {
         public PdfPoint Center { get; set; }
-        public virtual double RadiusX { get; set; }
-        public virtual double RadiusY { get; set; }
+        public virtual PdfMeasurement RadiusX { get; set; }
+        public virtual PdfMeasurement RadiusY { get; set; }
         public double RotationAngle { get; set; }
         public double StartAngle { get; set; }
         public double EndAngle { get; set; }
@@ -17,7 +17,7 @@ namespace IxMilia.Pdf
 
         private double EndAngleNormalized => EndAngle > StartAngle ? EndAngle : EndAngle + Math.PI * 2.0;
 
-        public PdfEllipse(PdfPoint center, double radiusX, double radiusY, double rotationAngle = 0.0, double startAngle = 0.0, double endAngle = Math.PI * 2.0, PdfStreamState state = default(PdfStreamState))
+        public PdfEllipse(PdfPoint center, PdfMeasurement radiusX, PdfMeasurement radiusY, double rotationAngle = 0.0, double startAngle = 0.0, double endAngle = Math.PI * 2.0, PdfStreamState state = default(PdfStreamState))
         {
             Center = center;
             RadiusX = radiusX;
@@ -143,10 +143,10 @@ namespace IxMilia.Pdf
             var x2 = x1;
             var y2 = -y1;
 
-            var p0 = new PdfPoint(x0, y0);
-            var p1 = new PdfPoint(x1, y1);
-            var p2 = new PdfPoint(x2, y2);
-            var p3 = new PdfPoint(x3, y3);
+            var p0 = new PdfPoint(PdfMeasurement.Points(x0), PdfMeasurement.Points(y0));
+            var p1 = new PdfPoint(PdfMeasurement.Points(x1), PdfMeasurement.Points(y1));
+            var p2 = new PdfPoint(PdfMeasurement.Points(x2), PdfMeasurement.Points(y2));
+            var p3 = new PdfPoint(PdfMeasurement.Points(x3), PdfMeasurement.Points(y3));
 
             // now rotate points by (theta / 2) + startAngle
             var rotTheta = theta * 0.5 + startAngle;

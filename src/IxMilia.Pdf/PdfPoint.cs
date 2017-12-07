@@ -7,10 +7,10 @@ namespace IxMilia.Pdf
 {
     public struct PdfPoint
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public PdfMeasurement X { get; set; }
+        public PdfMeasurement Y { get; set; }
         
-        public PdfPoint(double x, double y)
+        public PdfPoint(PdfMeasurement x, PdfMeasurement y)
         {
             X = x;
             Y = y;
@@ -18,15 +18,15 @@ namespace IxMilia.Pdf
 
         public override string ToString()
         {
-            return $"{X.AsFixed()} {Y.AsFixed()}";
+            return $"{X.AsPoints().AsFixed()} {Y.AsPoints().AsFixed()}";
         }
 
         public PdfPoint RotateAboutOrigin(double theta)
         {
             var sin = Math.Sin(theta);
             var cos = Math.Cos(theta);
-            var xprime = cos * X - sin * Y;
-            var yprime = sin * X + cos * Y;
+            var xprime = X * cos - Y * sin;
+            var yprime = X * sin + Y * cos;
             return new PdfPoint(xprime, yprime);
         }
 

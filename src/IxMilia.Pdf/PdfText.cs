@@ -8,13 +8,13 @@ namespace IxMilia.Pdf
     {
         public string Value { get; set; }
         public PdfFont Font { get; set; }
-        public double FontSize { get; set; }
+        public PdfMeasurement FontSize { get; set; }
         public PdfPoint Location { get; set; }
 
         public PdfStreamState State { get; set; }
-        public double CharacterWidth { get; set; }
+        public PdfMeasurement CharacterWidth { get; set; }
 
-        public PdfText(string value, PdfFont font, double fontSize, PdfPoint location, PdfStreamState state = default(PdfStreamState))
+        public PdfText(string value, PdfFont font, PdfMeasurement fontSize, PdfPoint location, PdfStreamState state = default(PdfStreamState))
         {
             Value = value;
             Font = font;
@@ -27,11 +27,11 @@ namespace IxMilia.Pdf
         {
             writer.SetState(State);
             writer.WriteLine("BT");
-            writer.WriteLine($"    /F{Font.FontId} {FontSize} Tf");
+            writer.WriteLine($"    /F{Font.FontId} {FontSize.AsPoints().AsFixed()} Tf");
             writer.WriteLine($"    {Location} Td");
-            if (CharacterWidth != 0.0)
+            if (CharacterWidth.RawValue != 0.0)
             {
-                writer.WriteLine($"    {CharacterWidth.AsFixed()} Tc");
+                writer.WriteLine($"    {CharacterWidth.AsPoints().AsFixed()} Tc");
             }
 
             writer.WriteLine($"    ({Value}) Tj");

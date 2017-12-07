@@ -4,12 +4,12 @@ namespace IxMilia.Pdf
 {
     public class PdfCircle : PdfEllipse
     {
-        public double Radius { get; set; }
+        public PdfMeasurement Radius { get; set; }
 
-        public override double RadiusX { get => Radius; set => Radius = value; }
-        public override double RadiusY { get => Radius; set => Radius = value; }
+        public override PdfMeasurement RadiusX { get => Radius; set => Radius = value; }
+        public override PdfMeasurement RadiusY { get => Radius; set => Radius = value; }
 
-        public PdfCircle(PdfPoint center, double radius, PdfStreamState state = default(PdfStreamState))
+        public PdfCircle(PdfPoint center, PdfMeasurement radius, PdfStreamState state = default(PdfStreamState))
             : base(center, radius, radius, state: state)
         {
             Radius = radius;

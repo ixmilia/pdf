@@ -49,9 +49,9 @@ namespace IxMilia.Pdf
             _lastState = state;
         }
 
-        private void WriteStrokeWidth(double strokeWidth)
+        private void WriteStrokeWidth(PdfMeasurement strokeWidth)
         {
-            WriteLine($"{strokeWidth.AsInvariant()} w");
+            WriteLine($"{strokeWidth.AsPoints().AsInvariant()} w");
         }
 
         private void WriteStrokeColor(PdfColor color)

@@ -80,9 +80,19 @@ namespace IxMilia.Pdf
             return new PdfMeasurement(a.RawValue - b.ConvertTo(a.MeasurementType).RawValue, a.MeasurementType);
         }
 
+        public static PdfMeasurement operator *(PdfMeasurement a, PdfMeasurement b)
+        {
+            return new PdfMeasurement(a.RawValue * b.ConvertTo(a.MeasurementType).RawValue, a.MeasurementType);
+        }
+
         public static PdfMeasurement operator *(PdfMeasurement a, double b)
         {
             return new PdfMeasurement(a.RawValue * b, a.MeasurementType);
+        }
+
+        public static PdfMeasurement operator /(PdfMeasurement a, PdfMeasurement b)
+        {
+            return new PdfMeasurement(a.RawValue / b.ConvertTo(a.MeasurementType).RawValue, a.MeasurementType);
         }
 
         public static PdfMeasurement operator /(PdfMeasurement a, double b)
@@ -119,5 +129,7 @@ namespace IxMilia.Pdf
         {
             return new PdfMeasurement(value, PdfMeasurementType.Mm);
         }
+
+        public static PdfMeasurement Zero => Points(0.0);
     }
 }

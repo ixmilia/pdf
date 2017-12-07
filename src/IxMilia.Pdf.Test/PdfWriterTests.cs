@@ -10,8 +10,8 @@ namespace IxMilia.Pdf.Test
 {
     public class PdfWriterTests : PdfTestBase
     {
-        public const double PageWidth = 8.5 * 72.0;
-        public const double PageHeight = 11.0 * 72.0;
+        public static PdfMeasurement PageWidth = PdfMeasurement.Inches(8.5);
+        public static PdfMeasurement PageHeight= PdfMeasurement.Inches(11.0);
         public const double ThirtyDegrees = Math.PI / 6.0;
         public const double FortyFiveDegrees = Math.PI / 4.0;
         public const double SixtyDegrees = Math.PI / 3.0;
@@ -76,11 +76,11 @@ startxref
             var builder = new PdfPathBuilder()
             {
                 new PdfLine(
-                    new PdfPoint(0.0, 0.0),
+                    new PdfPoint(PdfMeasurement.Zero, PdfMeasurement.Zero),
                     new PdfPoint(PageWidth, PageHeight)),
                 new PdfLine(
-                    new PdfPoint(PageWidth, 0.0),
-                    new PdfPoint(0.0, PageHeight))
+                    new PdfPoint(PageWidth, PdfMeasurement.Zero),
+                    new PdfPoint(PdfMeasurement.Zero, PageHeight))
             };
             AssertPathBuilderContains(builder, @"
 0.00 0.00 m
@@ -96,20 +96,20 @@ startxref
             var builder = new PdfPathBuilder()
             {
                 new PdfLine(
-                    new PdfPoint(0.0, 0.0),
-                    new PdfPoint(1.0, 1.0)),
+                    new PdfPoint(PdfMeasurement.Points(0.0), PdfMeasurement.Points(0.0)),
+                    new PdfPoint(PdfMeasurement.Points(1.0), PdfMeasurement.Points(1.0))),
                 new PdfLine(
-                    new PdfPoint(2.0, 2.0),
-                    new PdfPoint(3.0, 3.0),
-                    state: new PdfStreamState(strokeWidth: 1.1)),
+                    new PdfPoint(PdfMeasurement.Points(2.0), PdfMeasurement.Points(2.0)),
+                    new PdfPoint(PdfMeasurement.Points(3.0), PdfMeasurement.Points(3.0)),
+                    state: new PdfStreamState(strokeWidth: PdfMeasurement.Points(1.1))),
                 new PdfLine(
-                    new PdfPoint(4.0, 4.0),
-                    new PdfPoint(5.0, 5.0),
+                    new PdfPoint(PdfMeasurement.Points(4.0), PdfMeasurement.Points(4.0)),
+                    new PdfPoint(PdfMeasurement.Points(5.0), PdfMeasurement.Points(5.0)),
                     state: new PdfStreamState(strokeColor: new PdfColor(1.0, 0.0, 0.0))),
                 new PdfLine(
-                    new PdfPoint(6.0, 6.0),
-                    new PdfPoint(7.0, 7.0),
-                    state: new PdfStreamState(strokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
+                    new PdfPoint(PdfMeasurement.Points(6.0), PdfMeasurement.Points(6.0)),
+                    new PdfPoint(PdfMeasurement.Points(7.0), PdfMeasurement.Points(7.0)),
+                    state: new PdfStreamState(strokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: PdfMeasurement.Points(2.2)))
             };
             AssertPathBuilderContains(builder, @"
 0 w
@@ -141,20 +141,20 @@ S
             var builder = new PdfPathBuilder()
             {
                 new PdfLine(
-                    new PdfPoint(0.0, 0.0),
-                    new PdfPoint(1.0, 1.0)),
+                    new PdfPoint(PdfMeasurement.Points(0.0), PdfMeasurement.Points(0.0)),
+                    new PdfPoint(PdfMeasurement.Points(1.0), PdfMeasurement.Points(1.0))),
                 new PdfLine(
-                    new PdfPoint(2.0, 2.0),
-                    new PdfPoint(3.0, 3.0),
-                    state: new PdfStreamState(strokeWidth: 1.1)),
+                    new PdfPoint(PdfMeasurement.Points(2.0), PdfMeasurement.Points(2.0)),
+                    new PdfPoint(PdfMeasurement.Points(3.0), PdfMeasurement.Points(3.0)),
+                    state: new PdfStreamState(strokeWidth: PdfMeasurement.Points(1.1))),
                 new PdfLine(
-                    new PdfPoint(4.0, 4.0),
-                    new PdfPoint(5.0, 5.0),
+                    new PdfPoint(PdfMeasurement.Points(4.0), PdfMeasurement.Points(4.0)),
+                    new PdfPoint(PdfMeasurement.Points(5.0), PdfMeasurement.Points(5.0)),
                     state: new PdfStreamState(nonStrokeColor: new PdfColor(1.0, 0.0, 0.0))),
                 new PdfLine(
-                    new PdfPoint(6.0, 6.0),
-                    new PdfPoint(7.0, 7.0),
-                    state: new PdfStreamState(nonStrokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: 2.2))
+                    new PdfPoint(PdfMeasurement.Points(6.0), PdfMeasurement.Points(6.0)),
+                    new PdfPoint(PdfMeasurement.Points(7.0), PdfMeasurement.Points(7.0)),
+                    state: new PdfStreamState(nonStrokeColor: new PdfColor(0.0, 1.0, 0.0), strokeWidth: PdfMeasurement.Points(2.2)))
             };
             AssertPathBuilderContains(builder, @"
 0 w
@@ -185,12 +185,12 @@ S
         {
             var file = new PdfFile();
             var page = PdfPage.NewLetter();
-            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), 12.0, new PdfPoint(1.0 * 72, 2.0 * 72));
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint(PdfMeasurement.Inches(1.0), PdfMeasurement.Inches(2.0)));
             page.Items.Add(text);
             file.Pages.Add(page);
             AssertFileContains(file, @"
 BT
-    /F1 12 Tf
+    /F1 12.00 Tf
     72.00 144.00 Td
     (foo) Tj
 ET
@@ -202,10 +202,10 @@ ET
 
             AssertFileContains(file, "<</Type /Font /Subtype /Type1 /BaseFont /Helvetica>>");
 
-            text.CharacterWidth = 0.25;
+            text.CharacterWidth = PdfMeasurement.Points(0.25);
             AssertFileContains(file, @"
 BT
-    /F1 12 Tf
+    /F1 12.00 Tf
     72.00 144.00 Td
     0.25 Tc
     (foo) Tj
@@ -218,7 +218,7 @@ ET
         {
             var file = new PdfFile();
             var page = PdfPage.NewLetter();
-            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), 12.0, new PdfPoint());
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint());
             page.Items.Add(text);
             file.Pages.Add(page);
             Assert.Equal(0, file.Fonts.Count);
@@ -239,13 +239,13 @@ ET
             var font = new PdfFontType1(PdfFontType1Type.Helvetica);
 
             // font used twice on one page
-            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
-            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
+            page.Items.Add(new PdfText("foo", font, PdfMeasurement.Points(12.0), new PdfPoint()));
+            page.Items.Add(new PdfText("foo", font, PdfMeasurement.Points(12.0), new PdfPoint()));
             file.Pages.Add(page);
 
             // font used a third time on another page
             page = PdfPage.NewLetter();
-            page.Items.Add(new PdfText("foo", font, 12.0, new PdfPoint()));
+            page.Items.Add(new PdfText("foo", font, PdfMeasurement.Points(12.0), new PdfPoint()));
             file.Pages.Add(page);
 
             // font objects should only be listed once
