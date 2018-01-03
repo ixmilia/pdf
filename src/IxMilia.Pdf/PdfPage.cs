@@ -12,7 +12,7 @@ namespace IxMilia.Pdf
         public const double LetterWidth = 8.5;
         public const double LetterHeight = 11.0;
 
-        internal PdfStream Stream { get; } = new PdfStream();
+        internal PdfStream Stream { get; } = new PdfStream(true);
 
         public PdfMeasurement Width { get; set; }
         public PdfMeasurement Height { get; set; }
