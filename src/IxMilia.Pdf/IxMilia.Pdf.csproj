@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A portable .NET library for creating simple PDF documents.</Description>
-    <Copyright>Copyright 2017</Copyright>
+    <Copyright>Copyright 2018</Copyright>
     <AssemblyTitle>IxMilia.Pdf</AssemblyTitle>
     <VersionPrefix>0.1.0</VersionPrefix>
     <Authors>IxMilia</Authors>
