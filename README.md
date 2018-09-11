@@ -4,6 +4,8 @@
 A portable .NET library for creating simple PDF documents based off the Adobe
 specification from [here](http://wwwimages.adobe.com/content/dam/Adobe/en/devnet/pdf/pdfs/PDF32000_2008.pdf).
 
+[![Build Status](https://dev.azure.com/ixmilia/public/_apis/build/status/Pdf?branchName=master)](https://dev.azure.com/ixmilia/public/_build/latest?definitionId=12)
+
 ## Usage
 
 Create a PDF file:
