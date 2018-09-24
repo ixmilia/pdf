@@ -17,12 +17,12 @@ using IxMilia.Pdf;
 
 // create the page
 PdfPage page = PdfPage.NewLetter(); // 8.5" x 11"
-PdfPoint topLeft = new PdfPoint(0.0, page.Height);
-PdfPoint bottomLeft = new PdfPoint(0.0, 0.0);
-PdfPoint bottomRight = new PdfPoint(page.Width, 0.0);
+PdfPoint topLeft = new PdfPoint(PdfMeasurement.Zero, page.Height);
+PdfPoint bottomLeft = new PdfPoint(PdfMeasurement.Zero, PdfMeasurement.Zero);
+PdfPoint bottomRight = new PdfPoint(page.Width, PdfMeasurement.Zero);
 
 // add text
-page.Items.Add(new PdfText("some text", new PdfFont("Helvetica"), 12.0, bottomLeft));
+page.Items.Add(new PdfText("some text", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), bottomLeft));
 
 // add a line and circle
 PdfPathBuilder builder = new PdfPathBuilder()
