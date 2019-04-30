@@ -19,6 +19,24 @@ namespace IxMilia.Pdf.Test
         public static PdfPoint PageCenter = new PdfPoint(PageWidth / 2.0, PageHeight / 2.0);
 
         [Fact]
+        public void FileSystemAPITest()
+        {
+            var filePath = Path.GetTempFileName();
+            var file = new PdfFile();
+            file.Save(filePath);
+            var fileText = File.ReadAllText(filePath);
+            Assert.Contains("%PDF-1.6", fileText);
+
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch
+            {
+            }
+        }
+
+        [Fact]
         public void WriteEmptyFileTest()
         {
             var file = new PdfFile();

@@ -5,7 +5,7 @@
     <Copyright>Copyright 2018</Copyright>
     <AssemblyTitle>IxMilia.Pdf</AssemblyTitle>
     <Authors>IxMilia</Authors>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFrameworks>netstandard1.0;netstandard1.3</TargetFrameworks>
     <AssemblyName>IxMilia.Pdf</AssemblyName>
     <PackageId>IxMilia.Pdf</PackageId>
     <PackageTags>PDF</PackageTags>
@@ -16,6 +16,10 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <DefineConstants>$(DefineConstants);HAS_FILESYSTEM_ACCESS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

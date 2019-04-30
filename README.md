@@ -40,4 +40,7 @@ using (FileStream fs = new FileStream(@"C:\Path\To\File.pdf", FileMode.Create))
 {
     file.Save(fs);
 }
+
+// if on >= NETStandard1.3 you can use
+// file.Save(@"C:\Path\To\File.pdf");
 ```

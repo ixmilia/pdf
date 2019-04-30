@@ -14,6 +14,16 @@ namespace IxMilia.Pdf
         public IList<PdfPage> Pages => _catalog.Pages.Pages;
         public IList<PdfFont> Fonts => _catalog.Fonts;
 
+#if HAS_FILESYSTEM_ACCESS
+        public void Save(string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                Save(stream);
+            }
+        }
+#endif
+
         public void Save(Stream stream)
         {
             _offsets.Clear();
