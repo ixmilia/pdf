@@ -9,8 +9,8 @@
     <AssemblyName>IxMilia.Pdf</AssemblyName>
     <PackageId>IxMilia.Pdf</PackageId>
     <PackageTags>PDF</PackageTags>
-    <PackageProjectUrl>https://github.com/IxMilia/Pdf</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ixmilia/pdf</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <!-- SourceLink settings -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

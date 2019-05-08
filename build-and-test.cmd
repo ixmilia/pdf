@@ -1,5 +1,9 @@
-set TEST_PROJECT=.\src\IxMilia.Pdf.Test\IxMilia.Pdf.Test.csproj
-dotnet restore %TEST_PROJECT%
+@echo off
+
+set SOLUTION=%~dp0IxMilia.Pdf.sln
+dotnet restore %SOLUTION%
 if errorlevel 1 exit /b 1
-dotnet test %TEST_PROJECT%
+dotnet build %SOLUTION%
+if errorlevel 1 exit /b 1
+dotnet test %SOLUTION%
 if errorlevel 1 exit /b 1

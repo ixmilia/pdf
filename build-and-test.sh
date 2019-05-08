@@ -1,5 +1,20 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
 
-TEST_PROJECT=./src/IxMilia.Pdf.Test/IxMilia.Pdf.Test.csproj
-dotnet restore $TEST_PROJECT
-dotnet test $TEST_PROJECT
+source="${BASH_SOURCE[0]}"
+
+# resolve $SOURCE until the file is no longer a symlink
+while [[ -h $source ]]; do
+  scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
+  source="$(readlink "$source")"
+
+  # if $source was a relative symlink, we need to resolve it relative to the path where the
+  # symlink file was located
+  [[ $source != /* ]] && source="$scriptroot/$source"
+done
+
+scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
+
+SOLUTION=$scriptroot/IxMilia.Pdf.sln
+dotnet restore $SOLUTION
+dotnet build $SOLUTION
+dotnet test $SOLUTION
