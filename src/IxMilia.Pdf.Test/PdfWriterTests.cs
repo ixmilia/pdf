@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using IxMilia.Pdf.Encoders;
 using Xunit;
 
 namespace IxMilia.Pdf.Test
@@ -396,6 +397,27 @@ ET
 229.50 528.50 m
 83.14 444.00 -1.25 316.18 41.00 243.00 c
 ");
+        }
+
+        [Fact]
+        public void VerifyStreamFilterTest()
+        {
+            var page = new PdfPage(PdfMeasurement.Inches(8.5), PdfMeasurement.Inches(11.0), new ASCIIHexEncoder());
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint(PdfMeasurement.Inches(1.0), PdfMeasurement.Inches(1.0)));
+            page.Items.Add(text);
+
+            var expected = @"
+<</Length 181
+  /Filter [/ASCIIHexDecode]
+>>
+stream
+3020770D0A30203020302052470D0A30203020302072670D0A42540D0A202020202F46312031322E30302054660D0A2020202037322E30302037322E30302054
+640D0A2020202028666F6F2920546A0D0A45540D0A530D0A>
+endstream
+endobj
+";
+
+            AssertPageContains(page, expected);
         }
     }
 }

@@ -1,13 +1,13 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using IxMilia.Pdf.Extensions;
-using System.Text;
 
 namespace IxMilia.Pdf
 {
     internal class PdfStreamWriter
     {
-        private StringBuilder _sb = new StringBuilder();
+        private List<byte> _bytes = new List<byte>();
         private PdfStreamState _lastState = default(PdfStreamState);
 
         public PdfStreamWriter()
@@ -18,10 +18,15 @@ namespace IxMilia.Pdf
             WriteNonStrokeColor(_lastState.NonStrokeColor);
         }
 
+        public void Write(string value)
+        {
+            _bytes.AddRange(value.GetBytes());
+        }
+
         public void WriteLine(string value)
         {
-            _sb.Append(value);
-            _sb.Append("\r\n");
+            Write(value);
+            Write("\r\n");
         }
 
         public void SetState(PdfStreamState state)
@@ -64,12 +69,12 @@ namespace IxMilia.Pdf
             WriteLine($"{color} rg");
         }
 
-        public override string ToString()
+        public byte[] GetBytes()
         {
-            return _sb.ToString();
+            return _bytes.ToArray();
         }
 
-        public int Length => _sb.Length;
+        public int Length => _bytes.Count;
 
         internal void Stroke()
         {

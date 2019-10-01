@@ -1,7 +1,9 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using IxMilia.Pdf.Encoders;
 using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
@@ -9,9 +11,16 @@ namespace IxMilia.Pdf
     internal class PdfStream : PdfObject
     {
         public IList<PdfStreamItem> Items { get; } = new List<PdfStreamItem>();
+        public IList<IPdfEncoder> Encoders { get; } = new List<IPdfEncoder>();
+
+        public PdfStream(params IPdfEncoder[] encoders)
+        {
+            Encoders = encoders.ToList();
+        }
 
         protected override byte[] GetContent()
         {
+            var bytes = new List<byte>();
             var writer = new PdfStreamWriter();
             foreach (var item in Items)
             {
@@ -20,12 +29,28 @@ namespace IxMilia.Pdf
 
             writer.Stroke();
 
+            var data = writer.GetBytes();
+            foreach (var encoder in Encoders)
+            {
+                data = encoder.Encode(data);
+            }
+
             var sb = new StringBuilder();
-            sb.Append($"<</Length {writer.Length}>>\r\n");
+            sb.Append($"<</Length {data.Length}");
+            if (Encoders.Count > 0)
+            {
+                sb.Append("\r\n");
+                sb.Append($"  /Filter [{string.Join(" ", Encoders.Select(e => "/" + e.DisplayName).Reverse())}]\r\n");
+            }
+
+            sb.Append(">>\r\n");
             sb.Append("stream\r\n");
-            sb.Append(writer.ToString());
-            sb.Append("endstream\r\n");
-            return sb.ToString().GetBytes();
+            bytes.AddRange(sb.ToString().GetBytes());
+
+            bytes.AddRange(data);
+            bytes.AddRange("endstream\r\n".GetBytes());
+
+            return bytes.ToArray();
         }
     }
 }

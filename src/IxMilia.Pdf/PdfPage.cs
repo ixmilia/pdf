@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IxMilia.Pdf.Encoders;
 using IxMilia.Pdf.Extensions;
 
 namespace IxMilia.Pdf
@@ -12,16 +13,17 @@ namespace IxMilia.Pdf
         public const double LetterWidth = 8.5;
         public const double LetterHeight = 11.0;
 
-        internal PdfStream Stream { get; } = new PdfStream();
+        internal PdfStream Stream { get; }
 
         public PdfMeasurement Width { get; set; }
         public PdfMeasurement Height { get; set; }
         public IList<PdfStreamItem> Items => Stream.Items;
 
-        public PdfPage(PdfMeasurement width, PdfMeasurement height)
+        public PdfPage(PdfMeasurement width, PdfMeasurement height, params IPdfEncoder[] encoders)
         {
             Width = width;
             Height = height;
+            Stream = new PdfStream(encoders);
         }
 
         public static PdfPage NewLetter()
