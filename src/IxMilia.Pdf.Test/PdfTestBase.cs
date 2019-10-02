@@ -1,6 +1,7 @@
 // Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.IO;
+using System.Text;
 using Xunit;
 
 namespace IxMilia.Pdf.Test
@@ -17,13 +18,16 @@ namespace IxMilia.Pdf.Test
         {
             using (var ms = new MemoryStream())
             {
+                var sb = new StringBuilder();
                 file.Save(ms);
                 ms.Seek(0, SeekOrigin.Begin);
-                using (var reader = new StreamReader(ms))
+                int b;
+                while ((b = ms.ReadByte()) >= 0)
                 {
-                    var actual = reader.ReadToEnd();
-                    return actual;
+                    sb.Append((char)b);
                 }
+
+                return sb.ToString();
             }
         }
 

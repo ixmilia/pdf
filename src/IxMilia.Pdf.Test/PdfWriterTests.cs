@@ -12,7 +12,7 @@ namespace IxMilia.Pdf.Test
     public class PdfWriterTests : PdfTestBase
     {
         public static PdfMeasurement PageWidth = PdfMeasurement.Inches(8.5);
-        public static PdfMeasurement PageHeight= PdfMeasurement.Inches(11.0);
+        public static PdfMeasurement PageHeight = PdfMeasurement.Inches(11.0);
         public const double ThirtyDegrees = Math.PI / 6.0;
         public const double FortyFiveDegrees = Math.PI / 4.0;
         public const double SixtyDegrees = Math.PI / 3.0;
@@ -44,6 +44,7 @@ namespace IxMilia.Pdf.Test
             file.Pages.Add(PdfPage.NewLetter());
             var expected = @"
 %PDF-1.6
+%" + "\u00E6\u00E6\u00E6\u00E6" /* need to ensure the `µ` character isn't mangled by the test */ + @"
 1 0 obj
 <</Type /Catalog /Pages 2 0 R>>
 endobj
@@ -65,13 +66,13 @@ endobj
 xref
 0 5
 0000000000 65535 f
-0000000010 00000 n
-0000000060 00000 n
-0000000118 00000 n
-0000000228 00000 n
+0000000017 00000 n
+0000000067 00000 n
+0000000125 00000 n
+0000000235 00000 n
 trailer <</Size 5 /Root 1 0 R>>
 startxref
-308
+315
 %%EOF
 ";
             AssertFileEquals(file, expected);

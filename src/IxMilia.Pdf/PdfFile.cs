@@ -8,13 +8,15 @@ namespace IxMilia.Pdf
 {
     public class PdfFile
     {
+        private static readonly byte _binaryCharacter = (byte)'\u00E6';
+        private static readonly byte[] _binaryMarker = new byte[] { (byte)'%', _binaryCharacter, _binaryCharacter, _binaryCharacter, _binaryCharacter, (byte)'\r', (byte)'\n' };
+
         private PdfCatalog _catalog = new PdfCatalog();
         private List<int> _offsets = new List<int>();
 
         public IList<PdfPage> Pages => _catalog.Pages.Pages;
         public IList<PdfFont> Fonts => _catalog.Fonts;
 
-#if HAS_FILESYSTEM_ACCESS
         public void Save(string path)
         {
             using (var stream = new FileStream(path, FileMode.Create))
@@ -22,7 +24,6 @@ namespace IxMilia.Pdf
                 Save(stream);
             }
         }
-#endif
 
         public void Save(Stream stream)
         {
@@ -31,6 +32,7 @@ namespace IxMilia.Pdf
             BeforeWrite(_catalog);
             AssignIds();
             stream.WriteLine("%PDF-1.6");
+            stream.Write(_binaryMarker, 0, _binaryMarker.Length); // binary marker, just easier to always include
             WriteObject(_catalog, stream, writtenObjects);
 
             var xrefCount = _offsets.Count + 1; // to account for the required zero-id object
