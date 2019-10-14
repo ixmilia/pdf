@@ -18,7 +18,14 @@ namespace IxMilia.Pdf.Extensions
 
         public static string AsFixed(this double value)
         {
-            return value.ToString("f2", CultureInfo.InvariantCulture);
+            var str = value.ToString("f2", CultureInfo.InvariantCulture);
+            // special case for really small negative values that round to 0
+            if (str == "-0.00")
+            {
+                str = "0.00";
+            }
+
+            return str;
         }
     }
 }
