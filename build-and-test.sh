@@ -1,20 +1,33 @@
-#!/usr/bin/env bash
+#!/bin/sh -e
 
-source="${BASH_SOURCE[0]}"
+_SCRIPT_DIR="$( cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P )"
 
-# resolve $SOURCE until the file is no longer a symlink
-while [[ -h $source ]]; do
-  scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
-  source="$(readlink "$source")"
+CONFIGURATION=Debug
+RUNTESTS=true
 
-  # if $source was a relative symlink, we need to resolve it relative to the path where the
-  # symlink file was located
-  [[ $source != /* ]] && source="$scriptroot/$source"
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --configuration|-c)
+      CONFIGURATION=$2
+      shift
+      ;;
+    --notest)
+      RUNTESTS=false
+      ;;
+    *)
+      echo "Invalid argument: $1"
+      exit 1
+      ;;
+  esac
+  shift
 done
 
-scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
-
-SOLUTION=$scriptroot/IxMilia.Pdf.sln
+# build
+SOLUTION=$_SCRIPT_DIR/IxMilia.Pdf.sln
 dotnet restore $SOLUTION
-dotnet build $SOLUTION
-dotnet test $SOLUTION
+dotnet build $SOLUTION -c $CONFIGURATION
+
+# test
+if [ "$RUNTESTS" = "true" ]; then
+    dotnet test $SOLUTION -c $CONFIGURATION --no-restore --no-build
+fi
