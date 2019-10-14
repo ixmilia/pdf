@@ -21,29 +21,29 @@ namespace IxMilia.Pdf.Test
         [Fact]
         public void ASeriesWidthTest()
         {
-            Assert.Equal(GetAPageWidth(0), 841);
-            Assert.Equal(GetAPageWidth(1), 594);
-            Assert.Equal(GetAPageWidth(2), 420);
-            Assert.Equal(GetAPageWidth(3), 297);
-            Assert.Equal(GetAPageWidth(4), 210);
-            Assert.Equal(GetAPageWidth(5), 148);
-            Assert.Equal(GetAPageWidth(6), 105);
-            Assert.Equal(GetAPageWidth(7), 74);
-            Assert.Equal(GetAPageWidth(8), 52);
+            Assert.Equal(841, GetAPageWidth(0));
+            Assert.Equal(594, GetAPageWidth(1));
+            Assert.Equal(420, GetAPageWidth(2));
+            Assert.Equal(297, GetAPageWidth(3));
+            Assert.Equal(210, GetAPageWidth(4));
+            Assert.Equal(148, GetAPageWidth(5));
+            Assert.Equal(105, GetAPageWidth(6));
+            Assert.Equal(74, GetAPageWidth(7));
+            Assert.Equal(52, GetAPageWidth(8));
         }
 
         [Fact]
         public void ASeriesHeightTest()
         {
-            Assert.Equal(GetAPageHeight(0), 1189);
-            Assert.Equal(GetAPageHeight(1), 841);
-            Assert.Equal(GetAPageHeight(2), 594);
-            Assert.Equal(GetAPageHeight(3), 420);
-            Assert.Equal(GetAPageHeight(4), 297);
-            Assert.Equal(GetAPageHeight(5), 210);
-            Assert.Equal(GetAPageHeight(6), 148);
-            Assert.Equal(GetAPageHeight(7), 105);
-            Assert.Equal(GetAPageHeight(8), 74);
+            Assert.Equal(1189, GetAPageHeight(0));
+            Assert.Equal(841, GetAPageHeight(1));
+            Assert.Equal(594, GetAPageHeight(2));
+            Assert.Equal(420, GetAPageHeight(3));
+            Assert.Equal(297, GetAPageHeight(4));
+            Assert.Equal(210, GetAPageHeight(5));
+            Assert.Equal(148, GetAPageHeight(6));
+            Assert.Equal(105, GetAPageHeight(7));
+            Assert.Equal(74, GetAPageHeight(8));
         }
 
         private static int GetAPageWidth(int n)
