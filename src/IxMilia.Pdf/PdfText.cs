@@ -34,7 +34,22 @@ namespace IxMilia.Pdf
                 writer.WriteLine($"    {CharacterWidth.AsPoints().AsFixed()} Tc");
             }
 
-            writer.WriteLine($"    ({Value}) Tj");
+            writer.Write("    (");
+            foreach (var c in Value)
+            {
+                switch (c)
+                {
+                    case '(':
+                    case ')':
+                    case '\\':
+                        writer.Write((byte)'\\');
+                        break;
+                }
+
+                writer.Write((byte)c);
+            }
+
+            writer.WriteLine(") Tj");
             writer.WriteLine("ET");
         }
     }

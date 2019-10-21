@@ -18,6 +18,11 @@ namespace IxMilia.Pdf
             WriteNonStrokeColor(_lastState.NonStrokeColor);
         }
 
+        public void Write(byte b)
+        {
+            _bytes.Add(b);
+        }
+
         public void Write(string value)
         {
             _bytes.AddRange(value.GetBytes());

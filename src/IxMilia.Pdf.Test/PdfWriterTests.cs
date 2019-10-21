@@ -234,6 +234,15 @@ ET
         }
 
         [Fact]
+        public void StringEscapeSequencesTest()
+        {
+            var page = PdfPage.NewLetter();
+            var text = new PdfText(@"outer (inner \backslash) after", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint());
+            page.Items.Add(text);
+            AssertPageContains(page, @"(outer \(inner \\backslash\) after) Tj");
+        }
+
+        [Fact]
         public void VerifyFontsAreAddedOnSaveTest()
         {
             var file = new PdfFile();
