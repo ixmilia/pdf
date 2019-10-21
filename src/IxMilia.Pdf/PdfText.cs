@@ -34,7 +34,7 @@ namespace IxMilia.Pdf
                 writer.WriteLine($"    {CharacterWidth.AsPoints().AsFixed()} Tc");
             }
 
-            writer.Write("    (");
+            writer.Write("    [(");
             foreach (var c in Value)
             {
                 switch (c)
@@ -49,7 +49,7 @@ namespace IxMilia.Pdf
                 writer.Write((byte)c);
             }
 
-            writer.WriteLine(") Tj");
+            writer.WriteLine(")] TJ");
             writer.WriteLine("ET");
         }
     }

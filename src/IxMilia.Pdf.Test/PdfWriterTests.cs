@@ -212,7 +212,7 @@ S
 BT
     /F1 12.00 Tf
     72.00 144.00 Td
-    (foo) Tj
+    [(foo)] TJ
 ET
 ");
 
@@ -228,7 +228,7 @@ BT
     /F1 12.00 Tf
     72.00 144.00 Td
     0.25 Tc
-    (foo) Tj
+    [(foo)] TJ
 ET
 ");
         }
@@ -239,7 +239,7 @@ ET
             var page = PdfPage.NewLetter();
             var text = new PdfText(@"outer (inner \backslash) after", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint());
             page.Items.Add(text);
-            AssertPageContains(page, @"(outer \(inner \\backslash\) after) Tj");
+            AssertPageContains(page, @"[(outer \(inner \\backslash\) after)] TJ");
         }
 
         [Fact]
@@ -417,12 +417,12 @@ ET
             page.Items.Add(text);
 
             var expected = @"
-<</Length 181
+<</Length 185
   /Filter [/ASCIIHexDecode]
 >>
 stream
 3020770D0A30203020302052470D0A30203020302072670D0A42540D0A202020202F46312031322E30302054660D0A2020202037322E30302037322E30302054
-640D0A2020202028666F6F2920546A0D0A45540D0A530D0A>
+640D0A202020205B28666F6F295D20544A0D0A45540D0A530D0A>
 endstream
 endobj
 ";
