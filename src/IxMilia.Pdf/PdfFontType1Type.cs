@@ -15,7 +15,7 @@ namespace IxMilia.Pdf
         CourierBold,
         ZapfDingbats,
         TimesItalic,
-        HelvaticaOblique,
+        HelveticaOblique,
         CourierOblique,
         TimesBoldItalic,
         HelveticaBoldOblique,
@@ -46,8 +46,8 @@ namespace IxMilia.Pdf
                     return "ZapfDingbats";
                 case PdfFontType1Type.TimesItalic:
                     return "Times-Italic";
-                case PdfFontType1Type.HelvaticaOblique:
-                    return "Helvatica-Oblique";
+                case PdfFontType1Type.HelveticaOblique:
+                    return "Helvetica-Oblique";
                 case PdfFontType1Type.CourierOblique:
                     return "Courier-Oblique";
                 case PdfFontType1Type.TimesBoldItalic:
