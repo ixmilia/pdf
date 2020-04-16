@@ -1,5 +1,3 @@
-// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -44,7 +42,7 @@ namespace IxMilia.Pdf.Test
             file.Pages.Add(PdfPage.NewLetter());
             var expected = @"
 %PDF-1.6
-%" + "\u00E6\u00E6\u00E6\u00E6" /* need to ensure the `µ` character isn't mangled by the test */ + @"
+%" + "\u00E6\u00E6\u00E6\u00E6" /* need to ensure the `ï¿½` character isn't mangled by the test */ + @"
 1 0 obj
 <</Type /Catalog /Pages 2 0 R>>
 endobj
