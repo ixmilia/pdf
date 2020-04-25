@@ -14,6 +14,11 @@ namespace IxMilia.Pdf
             Y = y;
         }
 
+        public PdfPoint(double x, double y, PdfMeasurementType measurementType)
+            : this(new PdfMeasurement(x, measurementType), new PdfMeasurement(y, measurementType))
+        {
+        }
+
         public override string ToString()
         {
             return $"{X.AsPoints().AsFixed()} {Y.AsPoints().AsFixed()}";

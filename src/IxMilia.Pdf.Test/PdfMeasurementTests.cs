@@ -35,5 +35,13 @@ namespace IxMilia.Pdf.Test
             Assert.Equal(2.0, (oneInch1 + oneInch2).RawValue);
             Assert.Equal(50.8, (oneInch2 + oneInch1).RawValue);
         }
+
+        [Fact]
+        public void PointConstructionWithLessVerboseMeasurementTest()
+        {
+            var point = new PdfPoint(1.0, 2.0, PdfMeasurementType.Inch);
+            Assert.Equal(25.4, point.X.ConvertTo(PdfMeasurementType.Mm).RawValue);
+            Assert.Equal(50.8, point.Y.ConvertTo(PdfMeasurementType.Mm).RawValue);
+        }
     }
 }
