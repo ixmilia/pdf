@@ -38,7 +38,7 @@ namespace IxMilia.Pdf
             if (Encoders.Count > 0)
             {
                 sb.Append("\r\n");
-                sb.Append($"  /Filter [{string.Join(" ", Encoders.Select(e => "/" + e.DisplayName).Reverse())}]\r\n");
+                sb.Append($"  /Filter {Encoders.AsEncoderList()}\r\n");
             }
 
             sb.Append(">>\r\n");

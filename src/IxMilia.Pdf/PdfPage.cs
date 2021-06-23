@@ -60,11 +60,17 @@ namespace IxMilia.Pdf
             {
                 yield return text.Font;
             }
+
+            foreach (var image in Items.OfType<PdfImageItem>())
+            {
+                yield return image.Image;
+            }
         }
 
         protected override byte[] GetContent()
         {
             var resources = new List<string>();
+
             var seenFonts = new HashSet<PdfFont>();
             foreach (var font in GetAllFonts())
             {
@@ -74,12 +80,26 @@ namespace IxMilia.Pdf
                 }
             }
 
+            var seenImages = new HashSet<PdfImageObject>();
+            foreach (var image in GetAllImageObjects())
+            {
+                if (seenImages.Add(image))
+                {
+                    resources.Add($"/XObject <</{image.ReferenceId} {image.Id.AsObjectReference()}>>");
+                }
+            }
+
             return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsPoints().AsFixed()} {Height.AsPoints().AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
         }
 
         private IEnumerable<PdfFont> GetAllFonts()
         {
             return Items.OfType<PdfText>().Select(t => t.Font);
+        }
+
+        private IEnumerable<PdfImageObject> GetAllImageObjects()
+        {
+            return Items.OfType<PdfImageItem>().Select(i => i.Image);
         }
     }
 }

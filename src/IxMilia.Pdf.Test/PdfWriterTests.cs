@@ -427,5 +427,47 @@ endobj
 
             AssertPageContains(page, expected);
         }
+
+        [Fact]
+        public void VerifyGraphicsStreamTest()
+        {
+            var page = new PdfPage(PdfMeasurement.Inches(8.5), PdfMeasurement.Inches(11.0));
+
+            var width = 100;
+            var height = 100;
+            var bpp = 3;
+            var imageBytes = new byte[width * height * bpp]; // 0 is fine for this
+            var imageObject = new PdfImageObject(width, height, PdfColorSpace.DeviceRGB, 8, imageBytes, new ASCIIHexEncoder());
+            var xScale = 400;
+            var yScale = 400;
+            var xOffset = 100;
+            var yOffset = 100;
+            var transform = PdfMatrix.ScaleThenTranslate(xScale, yScale, xOffset, yOffset);
+            var imageItem = new PdfImageItem(imageObject, transform);
+            page.Items.Add(imageItem);
+
+            // placement of image
+            var expectedStream = @"
+q
+  400.00 0.00 0.00 400.00 100.00 100.00 cm
+  /Im5 Do
+Q
+";
+            AssertPageContains(page, expectedStream);
+
+            // raw image data
+            var expectedImageData = @"
+<</Type /XObject
+  /Subtype /Image
+  /Width 100
+  /Height 100
+  /ColorSpace /DeviceRGB
+  /BitsPerComponent 8
+  /Length 60939
+  /Filter [/ASCIIHexDecode]>>
+stream
+";
+            AssertPageContains(page, expectedImageData);
+        }
     }
 }
