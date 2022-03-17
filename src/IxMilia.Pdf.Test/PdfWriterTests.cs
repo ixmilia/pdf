@@ -408,6 +408,33 @@ ET
         }
 
         [Fact]
+        public void VerifyEllipseReallyCloseToQuadrants1And4()
+        {
+            var el = new PdfEllipse(
+                new PdfPoint(272.0, 396.0, 0.0),
+                new PdfMeasurement(340.0, PdfMeasurementType.Point),
+                new PdfMeasurement(339.99999999999994, PdfMeasurementType.Point),
+                rotationAngle: 0.0,
+                startAngle: 4.712388980384712,
+                endAngle: 1.5707963267949143);
+
+            var page = PdfPage.NewLetter();
+            var builder = new PdfPathBuilder() { el };
+            page.Items.Add(builder.ToPath());
+            var file = new PdfFile();
+            file.Pages.Add(page);
+
+            AssertPathItemContains(el, @"
+612.00 396.00 m
+612.00 583.78 459.78 736.00 272.00 736.00 c
+272.00 736.00 m
+272.00 736.00 272.00 736.00 272.00 736.00 c
+272.00 56.00 m
+459.78 56.00 612.00 208.22 612.00 396.00 c
+");
+        }
+
+        [Fact]
         public void VerifyStreamFilterTest()
         {
             var page = new PdfPage(PdfMeasurement.Inches(8.5), PdfMeasurement.Inches(11.0), new ASCIIHexEncoder());

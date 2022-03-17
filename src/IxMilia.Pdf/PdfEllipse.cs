@@ -65,7 +65,9 @@ namespace IxMilia.Pdf
             var qStart = Math.PI / 2.0 * (quadrant - 1);
             var qEnd = qStart + Math.PI / 2.0;
 
-            if (StartAngle <= qStart && EndAngleNormalized >= qEnd)
+            // check both the actual angle as well as one full circle around; this will handle angles that span the 0 mark
+            if ((StartAngle <= qStart && EndAngleNormalized >= qEnd) ||
+                (StartAngle <= (qStart + Math.PI * 2.0) && EndAngleNormalized >= (qEnd + Math.PI * 2.0)))
             {
                 // included angle spans quadrant; draw entire thing
                 foreach (var command in GetCommands(qEnd - qStart, qStart))
