@@ -55,6 +55,14 @@ namespace IxMilia.Pdf
             bytes.AddRange(sb.ToString().GetNewLineBytes());
             bytes.AddRange("stream".GetNewLineBytes());
             bytes.AddRange(data);
+            if (data.Length >= 2 &&
+                data[data.Length - 2] != '\r' &&
+                data[data.Length - 1] != '\n')
+            {
+                // add newline if not already present
+                bytes.AddRange("\r\n".GetBytes());
+            }
+
             bytes.AddRange("endstream".GetNewLineBytes());
 
             return bytes.ToArray();
