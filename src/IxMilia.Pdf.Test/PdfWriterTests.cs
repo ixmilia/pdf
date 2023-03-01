@@ -232,6 +232,24 @@ ET
         }
 
         [Fact]
+        public void VerifyTextIsRenderedAsRotatedTest()
+        {
+            var file = new PdfFile();
+            var page = PdfPage.NewLetter();
+            var angle = 45.0 * Math.PI / 180.0;
+            var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint(PdfMeasurement.Inches(1.0), PdfMeasurement.Inches(2.0)), angle);
+            page.Items.Add(text);
+            file.Pages.Add(page);
+            AssertFileContains(file, @"
+BT
+    /F1 12.00 Tf
+    0.71 0.71 -0.71 0.71 72.00 144.00 Tm
+    [(foo)] TJ
+ET
+");
+        }
+
+        [Fact]
         public void StringEscapeSequencesTest()
         {
             var page = PdfPage.NewLetter();
