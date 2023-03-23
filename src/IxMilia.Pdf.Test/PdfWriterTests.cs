@@ -406,7 +406,7 @@ ET
         }
 
         [Fact]
-        public void VerifyElipticalArcsTest()
+        public void VerifyEllipticalArcsTest()
         {
             // partially fills first quadrant, fully fills second
             AssertPathItemContains(new PdfEllipse(PageCenter, radiusX: PageWidth / 2, radiusY: PageWidth / 4, startAngle: FortyFiveDegrees, endAngle: OneHundredEightyDegrees), @"
@@ -449,6 +449,24 @@ ET
 272.00 736.00 272.00 736.00 272.00 736.00 c
 272.00 56.00 m
 459.78 56.00 612.00 208.22 612.00 396.00 c
+");
+        }
+
+        [Fact]
+        public void VerifyFilledPolygon()
+        {
+            var p = new PdfFilledPolygon(new[]
+            {
+                new PdfPoint(0.0, 0.0, PdfMeasurementType.Point),
+                new PdfPoint(1.0, 0.0, PdfMeasurementType.Point),
+                new PdfPoint(1.0, 1.0, PdfMeasurementType.Point),
+            }, new PdfStreamState());
+
+            AssertPathItemContains(p, @"
+0.00 0.00 m
+1.00 0.00 l
+1.00 1.00 l
+B
 ");
         }
 

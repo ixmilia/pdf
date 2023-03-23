@@ -34,7 +34,8 @@ namespace IxMilia.Pdf
 
         public void SetState(PdfStreamState state)
         {
-            if (state.StrokeColor != _lastState.StrokeColor || state.StrokeWidth != _lastState.StrokeWidth)
+            if (state.StrokeColor != _lastState.StrokeColor ||
+                state.StrokeWidth != _lastState.StrokeWidth)
             {
                 Stroke();
             }
