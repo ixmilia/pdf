@@ -4,6 +4,8 @@ namespace IxMilia.Pdf
 {
     public struct PdfColor
     {
+        private static readonly int DecimalPlaces = 3;
+
         public double R { get; set; }
         public double G { get; set; }
         public double B { get; set; }
@@ -17,7 +19,7 @@ namespace IxMilia.Pdf
 
         public override string ToString()
         {
-            return $"{R.AsInvariant()} {G.AsInvariant()} {B.AsInvariant()}";
+            return $"{R.AsFixed(DecimalPlaces)} {G.AsFixed(DecimalPlaces)} {B.AsFixed(DecimalPlaces)}";
         }
 
         public static bool operator ==(PdfColor a, PdfColor b)

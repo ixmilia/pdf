@@ -53,11 +53,11 @@ endobj
 <</Type /Page /Parent 2 0 R /Contents 4 0 R /MediaBox [0 0 612.00 792.00] /Resources <<>>>>
 endobj
 4 0 obj
-<</Length 28>>
+<</Length 52>>
 stream
 0 w
-0 0 0 RG
-0 0 0 rg
+0.000 0.000 0.000 RG
+0.000 0.000 0.000 rg
 S
 endstream
 endobj
@@ -70,7 +70,7 @@ xref
 0000000235 00000 n
 trailer <</Size 5 /Root 1 0 R>>
 startxref
-315
+339
 %%EOF
 ";
             AssertFileEquals(file, expected);
@@ -131,8 +131,8 @@ startxref
             };
             AssertPathBuilderContains(builder, @"
 0 w
-0 0 0 RG
-0 0 0 rg
+0.000 0.000 0.000 RG
+0.000 0.000 0.000 rg
 0.00 0.00 m
 1.00 1.00 l
 S
@@ -141,12 +141,12 @@ S
 3.00 3.00 l
 S
 0 w
-1 0 0 RG
+1.000 0.000 0.000 RG
 4.00 4.00 m
 5.00 5.00 l
 S
 2.2 w
-0 1 0 RG
+0.000 1.000 0.000 RG
 6.00 6.00 m
 7.00 7.00 l
 S
@@ -176,8 +176,8 @@ S
             };
             AssertPathBuilderContains(builder, @"
 0 w
-0 0 0 RG
-0 0 0 rg
+0.000 0.000 0.000 RG
+0.000 0.000 0.000 rg
 0.00 0.00 m
 1.00 1.00 l
 S
@@ -186,12 +186,12 @@ S
 3.00 3.00 l
 S
 0 w
-1 0 0 rg
+1.000 0.000 0.000 rg
 4.00 4.00 m
 5.00 5.00 l
 S
 2.2 w
-0 1 0 rg
+0.000 1.000 0.000 rg
 6.00 6.00 m
 7.00 7.00 l
 S
@@ -478,12 +478,12 @@ B
             page.Items.Add(text);
 
             var expected = @"
-<</Length 185
+<</Length 233
   /Filter [/ASCIIHexDecode]
 >>
 stream
-3020770D0A30203020302052470D0A30203020302072670D0A42540D0A202020202F46312031322E30302054660D0A2020202037322E30302037322E30302054
-640D0A202020205B28666F6F295D20544A0D0A45540D0A530D0A>
+3020770D0A302E30303020302E30303020302E3030302052470D0A302E30303020302E30303020302E3030302072670D0A42540D0A202020202F46312031322E
+30302054660D0A2020202037322E30302037322E30302054640D0A202020205B28666F6F295D20544A0D0A45540D0A530D0A>
 endstream
 endobj
 ";
