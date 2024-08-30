@@ -11,8 +11,8 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         configuration: [Debug, Release]
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
     - name: Build and test
       shell: pwsh
       run: |

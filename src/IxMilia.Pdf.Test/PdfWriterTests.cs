@@ -266,7 +266,7 @@ ET
             var text = new PdfText("foo", new PdfFontType1(PdfFontType1Type.Helvetica), PdfMeasurement.Points(12.0), new PdfPoint());
             page.Items.Add(text);
             file.Pages.Add(page);
-            Assert.Equal(0, file.Fonts.Count);
+            Assert.Empty(file.Fonts);
 
             using (var ms = new MemoryStream())
             {
