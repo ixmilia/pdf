@@ -24,8 +24,6 @@ namespace IxMilia.Pdf
 
         public static bool operator ==(PdfColor a, PdfColor b)
         {
-            if (ReferenceEquals(a, b))
-                return true;
             return a.R == b.R && a.G == b.G && a.B == b.B;
         }
 
@@ -39,7 +37,7 @@ namespace IxMilia.Pdf
             return (R.GetHashCode() * 17 ^ G.GetHashCode()) * 17 ^ B.GetHashCode();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is PdfColor)
                 return this == (PdfColor)obj;

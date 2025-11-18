@@ -65,8 +65,6 @@ namespace IxMilia.Pdf
 
         public static bool operator ==(PdfPoint a, PdfPoint b)
         {
-            if (ReferenceEquals(a, b))
-                return true;
             return a.X == b.X && a.Y == b.Y;
         }
 
@@ -80,7 +78,7 @@ namespace IxMilia.Pdf
             return X.GetHashCode() * 17 ^ Y.GetHashCode();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is PdfPoint)
                 return this == (PdfPoint)obj;

@@ -89,7 +89,7 @@ namespace IxMilia.Pdf
                 }
             }
 
-            return $"<</Type /Page /Parent {Parent.Id.AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsPoints().AsFixed()} {Height.AsPoints().AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
+            return $"<</Type /Page /Parent {(Parent?.Id ?? 0).AsObjectReference()} /Contents {Stream.Id.AsObjectReference()} /MediaBox [0 0 {Width.AsPoints().AsFixed()} {Height.AsPoints().AsFixed()}] /Resources <<{string.Join(" ", resources)}>>>>".GetNewLineBytes();
         }
 
         private IEnumerable<PdfFont> GetAllFonts()

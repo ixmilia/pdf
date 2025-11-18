@@ -8,7 +8,7 @@ namespace IxMilia.Pdf
     {
         internal int Id { get; set; }
 
-        public PdfObject Parent { get; internal set; }
+        public PdfObject? Parent { get; internal set; }
 
         protected abstract byte[] GetContent();
 
