@@ -532,5 +532,55 @@ stream
 ";
             AssertPageContains(page, expectedImageData);
         }
+
+        [Fact]
+        public void ClipTest()
+        {
+            var path = new PdfPath();
+            var builder = new PdfPathBuilder()
+            {
+                new PdfLine(
+                    new PdfPoint(PdfMeasurement.Zero, PageHeight / 2.0), // left middle
+                    new PdfPoint(PageWidth / 2.0, PageHeight)), // top middle
+                new PdfLine(
+                    new PdfPoint(PageWidth / 2.0, PageHeight), // top middle
+                    new PdfPoint(PageWidth, PageHeight / 2.0)), // right middle
+                new PdfLine(
+                    new PdfPoint(PageWidth, PageHeight / 2.0), // right middle
+                    new PdfPoint(PageWidth / 2.0, PdfMeasurement.Zero)), // bottom middle
+                new PdfLine(
+                    new PdfPoint(PageWidth / 2.0, PdfMeasurement.Zero), // bottom middle
+                    new PdfPoint(PdfMeasurement.Zero, PageHeight / 2.0)), // left middle
+            };
+
+            path.Commands.Add(new PdfClip(
+                new PdfMeasurement(0.25, PdfMeasurementType.Inch),
+                new PdfMeasurement(0.25, PdfMeasurementType.Inch),
+                PageWidth - new PdfMeasurement(0.5, PdfMeasurementType.Inch),
+                PageHeight - new PdfMeasurement(0.5, PdfMeasurementType.Inch)));
+            path.Commands.AddRange(builder.ToPath().Commands);
+
+            var page = PdfPage.NewLetter();
+            page.Items.Add(path);
+            var file = new PdfFile();
+            file.Pages.Add(page);
+
+            // first 4 lines are the clipping rectangle; remaining are the lines
+            AssertPageContains(page, """
+                n
+                18.00 18.00 576.00 756.00 re
+                W
+                n
+                0.00 396.00 m
+                306.00 792.00 l
+                306.00 792.00 m
+                612.00 396.00 l
+                612.00 396.00 m
+                306.00 0.00 l
+                306.00 0.00 m
+                0.00 396.00 l
+                S
+                """);
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace IxMilia.Pdf
 {
     public class PdfPath : PdfStreamItem
     {
-        public IList<PdfPathCommand> Commands { get; } = new List<PdfPathCommand>();
+        public List<PdfPathCommand> Commands { get; } = new List<PdfPathCommand>();
 
         internal override void Write(PdfStreamWriter writer)
         {
