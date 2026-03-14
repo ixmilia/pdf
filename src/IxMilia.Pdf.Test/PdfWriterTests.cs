@@ -520,14 +520,15 @@ Q
 
             // raw image data
             var expectedImageData = @"
-<</Type /XObject
-  /Subtype /Image
-  /Width 100
-  /Height 100
-  /ColorSpace /DeviceRGB
-  /BitsPerComponent 8
-  /Length 60939
-  /Filter [/ASCIIHexDecode]>>
+<< /Type /XObject
+   /Subtype /Image
+   /Width 100
+   /Height 100
+   /ColorSpace /DeviceRGB
+   /BitsPerComponent 8
+   /Length 60939
+   /Filter [/ASCIIHexDecode]
+>>
 stream
 ";
             AssertPageContains(page, expectedImageData);

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using IxMilia.Pdf.Encoders;
 using IxMilia.Pdf.Extensions;
+using IxMilia.Pdf.Objects;
 
 namespace IxMilia.Pdf
 {
@@ -35,24 +36,24 @@ namespace IxMilia.Pdf
                 data = encoder.Encode(data);
             }
 
-            var sb = new StringBuilder();
-            sb.Append("<</Type /XObject\r\n");
-            sb.Append("  /Subtype /Image\r\n");
-            sb.Append($"  /Width {Width}\r\n");
-            sb.Append($"  /Height {Height}\r\n");
-            sb.Append($"  /ColorSpace /{ColorSpace.ToPatternName()}\r\n");
-            sb.Append($"  /BitsPerComponent {BitsPerComponent}\r\n");
-            sb.Append($"  /Length {data.Length}");
+            var obj = new PdfDictionary();
+            obj.Items["Type"] = new PdfName("XObject");
+            obj.Items["Subtype"] = new PdfName("Image");
+            obj.Items["Width"] = new PdfInteger(Width);
+            obj.Items["Height"] = new PdfInteger(Height);
+            obj.Items["ColorSpace"] = new PdfName(ColorSpace.ToPatternName());
+            obj.Items["BitsPerComponent"] = new PdfInteger(BitsPerComponent);
+            obj.Items["Length"] = new PdfInteger(data.Length);
             if (Encoders.Count > 0)
             {
-                sb.Append("\r\n");
-                sb.Append($"  /Filter {Encoders.AsEncoderList()}");
+                obj.Items["Filter"] = new PdfArray(Encoders.Reverse().Select(e => new PdfName(e.DisplayName)).ToArray());
             }
 
-            sb.Append(">>");
+            var sb = new StringBuilder();
+            sb.Append(obj.ToString());
 
             var bytes = new List<byte>();
-            bytes.AddRange(sb.ToString().GetNewLineBytes());
+            bytes.AddRange(sb.ToString().GetBytes());
             bytes.AddRange("stream".GetNewLineBytes());
             bytes.AddRange(data);
             if (data.Length >= 2 &&
