@@ -15,6 +15,7 @@ namespace IxMilia.Pdf
         public int BitsPerComponent { get; set; }
         public byte[] Data { get; set; }
         public IList<IPdfEncoder> Encoders { get; } = new List<IPdfEncoder>();
+        public PdfDictionary DecodeParameters = new PdfDictionary();
 
         public string ReferenceId => $"Im{Id}";
 
@@ -47,6 +48,11 @@ namespace IxMilia.Pdf
             if (Encoders.Count > 0)
             {
                 obj.Items["Filter"] = new PdfArray(Encoders.Reverse().Select(e => new PdfName(e.DisplayName)).ToArray());
+            }
+
+            if (DecodeParameters.Items.Count > 0)
+            {
+                obj.Items["DecodeParms"] = new PdfArray(DecodeParameters);
             }
 
             var sb = new StringBuilder();

@@ -38,7 +38,8 @@ namespace IxMilia.Pdf.Test
         public void AssertFileContains(PdfFile file, string expected)
         {
             var actual = GetFileContents(file);
-            Assert.Contains(NormalizeCrLf(expected.Trim()), actual);
+            var expectedNormalized = NormalizeCrLf(expected.Trim());
+            Assert.Contains(expectedNormalized, actual);
         }
 
         public void AssertFileDoesNotContain(PdfFile file, string notExpected)

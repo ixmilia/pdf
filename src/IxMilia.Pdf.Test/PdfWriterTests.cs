@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using IxMilia.Pdf.Encoders;
+using IxMilia.Pdf.Objects;
 using Xunit;
 
 namespace IxMilia.Pdf.Test
@@ -532,6 +533,37 @@ Q
 stream
 ";
             AssertPageContains(page, expectedImageData);
+        }
+
+        [Fact]
+        public void VerifyImageObjectWithDecodeParamsTest()
+        {
+            var imageObject = new PdfImageObject(100, 200, PdfColorSpace.DeviceRGB, 8, new byte[0], new ASCIIHexEncoder());
+            imageObject.DecodeParameters.Items["K"] = new PdfInteger(-1);
+            imageObject.DecodeParameters.Items["Columns"] = new PdfInteger(100);
+            imageObject.DecodeParameters.Items["Rows"] = new PdfInteger(200);
+            imageObject.DecodeParameters.Items["BlackIs1"] = new PdfBoolean(true);
+            var page = PdfPage.NewLetter();
+            page.Items.Add(new PdfImageItem(imageObject));
+
+            var expected = """
+                << /Type /XObject
+                   /Subtype /Image
+                   /Width 100
+                   /Height 200
+                   /ColorSpace /DeviceRGB
+                   /BitsPerComponent 8
+                   /Length 3
+                   /Filter [/ASCIIHexDecode]
+                   /DecodeParms [<< /K -1
+                                   /Columns 100
+                                   /Rows 200
+                                   /BlackIs1 true
+                                >>
+                                ]
+                >>
+                """;
+            AssertPageContains(page, expected);
         }
 
         [Fact]
